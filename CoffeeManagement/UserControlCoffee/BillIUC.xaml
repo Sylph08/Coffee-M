@@ -1,0 +1,140 @@
+﻿<UserControl x:Class="CoffeeManagement.UserControlCoffee.BillIUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CoffeeManagement.UserControlCoffee"
+             mc:Ignorable="d"
+             
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+     TextElement.FontWeight="Regular"
+     TextElement.FontSize="13"
+     TextOptions.TextFormattingMode="Ideal"
+     TextOptions.TextRenderingMode="Auto"
+     Background="{DynamicResource MaterialDesignPaper}"
+     FontFamily="{DynamicResource MaterialDesignFont}" 
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"  
+             
+             DataContext="{StaticResource BillVM}"        
+             Name="billUC"
+             
+             d:DesignHeight="640" d:DesignWidth="1240">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadCommand}" CommandParameter="{Binding ElementName=billUC}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <UserControl.Resources>
+        <sys:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">7</sys:Double>
+        <sys:Double x:Key="{x:Static SystemParameters.HorizontalScrollBarHeightKey}">7</sys:Double>
+    </UserControl.Resources>
+    <materialDesign:Card Margin="10" Background="{DynamicResource PrimaryHueLightBrush}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}" Padding="5">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="9*"></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <!--cac element binding tu selected item-->
+                <materialDesign:Card Grid.Row="0" Margin="5" VerticalAlignment="Stretch">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="auto">
+                        <ListView ItemsSource="{Binding ListGrid}" SelectedItem="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Name="ListBills">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseDoubleClick">
+                                    <i:InvokeCommandAction Command="{Binding DoubleClickCommand}" CommandParameter="{Binding ElementName=ListBills}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Mã hóa đơn" DisplayMemberBinding="{Binding Id}"></GridViewColumn>
+                                    <GridViewColumn Header="Ngày tạo" DisplayMemberBinding="{Binding DateCreated}"></GridViewColumn>
+                                    <GridViewColumn Header="Nhân viên thực hiện" DisplayMemberBinding="{Binding UserName}"></GridViewColumn>
+                                    <GridViewColumn Header="Khách hàng" DisplayMemberBinding="{Binding CustomerPhone}"></GridViewColumn>
+                                    <GridViewColumn Header="Bàn" DisplayMemberBinding="{Binding TableInfo.DisplayName}"></GridViewColumn>
+                                    <GridViewColumn Header="Giá trị hóa đơn" DisplayMemberBinding="{Binding TrueBillValue}"></GridViewColumn>
+                                    <GridViewColumn Header="Ghi chú" DisplayMemberBinding="{Binding Note}"></GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </ScrollViewer>
+                </materialDesign:Card>
+                <materialDesign:Card Grid.Row="1" Margin="5">
+                    <WrapPanel VerticalAlignment="Center" Grid.Column="0">
+                        <Button Command="{Binding DeleteCommand}" Content="Xóa" Margin="5" Width="100"></Button>
+                    </WrapPanel>
+                </materialDesign:Card>
+            </Grid>
+            <materialDesign:Card Grid.Column="1" Margin="5">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <Button Command="{Binding ClearCommand}" Content="Clear" Margin="5" Width="100"></Button>
+                        <GroupBox  Header="Tìm kiếm"  Margin="3">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                                <StackPanel>
+                                    <ComboBox ItemsSource="{Binding SearchList}" Name="SearchListCB" materialDesign:TextFieldAssist.HasClearButton="True"
+                                      Margin="3" SelectedItem="{Binding SelectedSearchList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                materialDesign:HintAssist.Hint="Tìm kiếm theo">
+                                    </ComboBox>
+                                    <TextBox  materialDesign:HintAssist.Hint="Nội dung tìm kiếm"  materialDesign:TextFieldAssist.HasClearButton="True" Margin="3"                                      
+                                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"  VerticalAlignment="Center" 
+                                              Text="{Binding SearchContent, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </GroupBox>
+                        <GroupBox Header="Phòng/Bàn" Margin="3">
+                            <StackPanel materialDesign:ScrollBarAssist.ButtonsVisibility="Visible" Name="mealTypeSP">
+                                <RadioButton GroupName="groupBuy" Margin="3" Content="Mang về" IsChecked="{Binding BringHomeChecked}"/>
+                                <RadioButton GroupName="groupBuy" Margin="3" Name="AtStore" Content="Sử dụng tại quán" IsChecked="{Binding AtStoreChecked}"/>
+                                <ComboBox materialDesign:HintAssist.Hint="Chọn phòng" materialDesign:ComboBoxAssist.ClassicMode="True"
+                                          IsEnabled="{Binding Path=IsChecked, ElementName=AtStore}"
+                                          materialDesign:TextFieldAssist.HasClearButton="True" DisplayMemberPath="DisplayName" ItemsSource="{Binding RoomList}" 
+                                        SelectedItem="{Binding RoomSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ComboBox Margin="0 5 0 0" materialDesign:HintAssist.Hint="Chọn bàn" materialDesign:ComboBoxAssist.ClassicMode="True"
+                                          IsEnabled="{Binding Path=IsChecked, ElementName=AtStore}"
+                                          materialDesign:TextFieldAssist.HasClearButton="True" DisplayMemberPath="DisplayName" ItemsSource="{Binding TableList}" 
+                                      SelectedItem="{Binding TableSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox Header="Ngày bán" Margin="3">
+                            <StackPanel>
+                                <DatePicker materialDesign:HintAssist.Hint="Từ ngày" Style="{StaticResource MaterialDesignFloatingHintDatePicker}"
+                                            Text="{Binding txtFromDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            materialDesign:TextFieldAssist.HasClearButton="True" Focusable="False"/>
+                                <DatePicker materialDesign:HintAssist.Hint="Đến ngày" Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
+                                            Text="{Binding txtToDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            materialDesign:TextFieldAssist.HasClearButton="True" Focusable="False"/>
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox Header="Giờ bán" Margin="3">
+                            <StackPanel>
+                                <materialDesign:TimePicker Style="{StaticResource MaterialDesignFloatingHintTimePicker}" materialDesign:HintAssist.Hint="Chọn thời gian từ" 
+                                                           SelectedTime="{Binding StartHour, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                           materialDesign:TextFieldAssist.HasClearButton="True"/>
+                                <materialDesign:TimePicker Style="{StaticResource MaterialDesignFloatingHintTimePicker}" materialDesign:HintAssist.Hint="Chọn thời gian đến" 
+                                                           SelectedTime="{Binding EndHour, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                           materialDesign:TextFieldAssist.HasClearButton="True"/>
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox Header="Khách hàng" Margin="3">
+                            <StackPanel materialDesign:ScrollBarAssist.ButtonsVisibility="Visible">
+                                <RadioButton GroupName="groupCustomer" Margin="3" Content="Khách vãng lai" IsChecked="{Binding NonMemberChecked}"/>
+                                <RadioButton GroupName="groupCustomer" Margin="3" Name="IsMemberRB" Content="Thành viên" IsChecked="{Binding IsMemberChecked}"/>
+                                <TextBox materialDesign:HintAssist.Hint="Số điện thoại" Margin="10 0 0 0" materialDesign:TextFieldAssist.HasClearButton="True"
+                                        IsEnabled="{Binding Path=IsChecked, ElementName=IsMemberRB}"
+                                         Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                                         Text="{Binding CusPhone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        VerticalAlignment="Center" PreviewTextInput="PreviewTextInput"/>
+                            </StackPanel>
+                        </GroupBox>
+                    </StackPanel>
+                </ScrollViewer>
+            </materialDesign:Card>
+        </Grid>
+    </materialDesign:Card>
+</UserControl>

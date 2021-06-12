@@ -1,0 +1,1071 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="CoffeeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Bill">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="DateCreated" Type="smalldatetime" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="100" />
+          <Property Name="CustomerPhone" Type="nvarchar" MaxLength="15" />
+          <Property Name="TableID" Type="int" />
+          <Property Name="OriginBillValue" Type="float" />
+          <Property Name="TrueBillValue" Type="float" />
+          <Property Name="PointAdd" Type="float" />
+          <Property Name="PointSub" Type="int" />
+          <Property Name="IsPaid" Type="bit" />
+          <Property Name="IsUsingAtStore" Type="bit" />
+          <Property Name="IsCusMember" Type="bit" />
+          <Property Name="Note" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="BillInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BillID" Type="nvarchar" MaxLength="128" />
+          <Property Name="ProductID" Type="nvarchar" MaxLength="128" />
+          <Property Name="ProductName" Type="nvarchar(max)" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="Price" Type="int" />
+          <Property Name="IntoMoney" Type="int" />
+          <Property Name="Note" Type="nvarchar(max)" />
+          <Property Name="IsGift" Type="bit" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="Phone" />
+          </Key>
+          <Property Name="DisplayName" Type="nvarchar(max)" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="CustomerID" Type="nvarchar" MaxLength="15" />
+          <Property Name="TotalPurchased" Type="int" />
+          <Property Name="CurrentPoint" Type="float" />
+          <Property Name="CustomerTypeID" Type="int" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="Note" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="CustomerType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DisplayName" Type="nvarchar(max)" />
+          <Property Name="AddPoint" Type="float" />
+          <Property Name="TotalPurchaseNeeded" Type="int" />
+          <Property Name="Note" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="UserName" />
+          </Key>
+          <Property Name="FullName" Type="nvarchar" MaxLength="200" />
+          <Property Name="DateOfBirth" Type="smalldatetime" />
+          <Property Name="Sex" Type="nvarchar" MaxLength="50" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="200" />
+          <Property Name="EAddress" Type="nvarchar(max)" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="EPassword" Type="nvarchar(max)" />
+          <Property Name="AdminPermission" Type="bit" />
+          <Property Name="Note" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="MealType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DisplayName" Type="nvarchar(max)" />
+          <Property Name="Note" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="DisplayName" Type="nvarchar(max)" />
+          <Property Name="ProductTypeID" Type="int" />
+          <Property Name="BuyValue" Type="int" />
+          <Property Name="SellValue" Type="int" />
+          <Property Name="MinimumQuantity" Type="int" />
+          <Property Name="CurrentQuantity" Type="int" />
+          <Property Name="UnitID" Type="int" />
+          <Property Name="ProductImage" Type="nvarchar(max)" />
+          <Property Name="IsTrading" Type="bit" />
+          <Property Name="Note" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="ProductApplyForPromotion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductId" Type="nvarchar" MaxLength="128" />
+          <Property Name="PPDisplayName" Type="nvarchar(max)" />
+          <Property Name="ProductAmount" Type="int" />
+          <Property Name="PromotionId" Type="nvarchar" MaxLength="200" />
+          <Property Name="ProductType" Type="bit" />
+        </EntityType>
+        <EntityType Name="ProductType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DisplayName" Type="nvarchar(max)" />
+          <Property Name="MealTypeID" Type="int" />
+          <Property Name="Note" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Promotion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="DisplayName" Type="nvarchar(max)" />
+          <Property Name="FromDate" Type="smalldatetime" />
+          <Property Name="ToDate" Type="smalldatetime" />
+          <Property Name="AmountValue" Type="int" />
+          <Property Name="PercentValue" Type="float" />
+          <Property Name="PriceBillRequire" Type="int" />
+          <Property Name="PromotionType" Type="int" />
+          <Property Name="IsApply" Type="bit" />
+          <Property Name="Note" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="PromotionAndBill">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BillId" Type="nvarchar" MaxLength="128" />
+          <Property Name="PromotionId" Type="nvarchar" MaxLength="200" />
+          <Property Name="PromotionName" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Room">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DisplayName" Type="nvarchar(max)" />
+          <Property Name="Note" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="TableInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DisplayName" Type="nvarchar(max)" />
+          <Property Name="ChairAmount" Type="smallint" />
+          <Property Name="IsUsing" Type="bit" />
+          <Property Name="RoomID" Type="int" />
+          <Property Name="Note" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Unit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DisplayName" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Bill_1">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="0..1" />
+          <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="Bill">
+              <PropertyRef Name="UserName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bill_2">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="0..1" />
+          <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="Phone" />
+            </Principal>
+            <Dependent Role="Bill">
+              <PropertyRef Name="CustomerPhone" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bill_3">
+          <End Role="TableInfo" Type="Self.TableInfo" Multiplicity="0..1" />
+          <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TableInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Bill">
+              <PropertyRef Name="TableID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BillInfo_1">
+          <End Role="Bill" Type="Self.Bill" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="BillInfo" Type="Self.BillInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bill">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BillInfo">
+              <PropertyRef Name="BillID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BillInfo_2">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1" />
+          <End Role="BillInfo" Type="Self.BillInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BillInfo">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Customer_1">
+          <End Role="CustomerType" Type="Self.CustomerType" Multiplicity="0..1" />
+          <End Role="Customer" Type="Self.Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="CustomerTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_1">
+          <End Role="Unit" Type="Self.Unit" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Unit">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="UnitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_2">
+          <End Role="ProductType" Type="Self.ProductType" Multiplicity="0..1" />
+          <End Role="Product" Type="Self.Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="ProductTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductApplyForPromotion_1">
+          <End Role="Product" Type="Self.Product" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ProductApplyForPromotion" Type="Self.ProductApplyForPromotion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductApplyForPromotion">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductApplyForPromotion_2">
+          <End Role="Promotion" Type="Self.Promotion" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ProductApplyForPromotion" Type="Self.ProductApplyForPromotion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Promotion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductApplyForPromotion">
+              <PropertyRef Name="PromotionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductType_1">
+          <End Role="MealType" Type="Self.MealType" Multiplicity="0..1" />
+          <End Role="ProductType" Type="Self.ProductType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MealType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductType">
+              <PropertyRef Name="MealTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PromotionAndBill_1">
+          <End Role="Bill" Type="Self.Bill" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PromotionAndBill" Type="Self.PromotionAndBill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bill">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PromotionAndBill">
+              <PropertyRef Name="BillId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PromotionAndBill_2">
+          <End Role="Promotion" Type="Self.Promotion" Multiplicity="0..1" />
+          <End Role="PromotionAndBill" Type="Self.PromotionAndBill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Promotion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PromotionAndBill">
+              <PropertyRef Name="PromotionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TableInfo_1">
+          <End Role="Room" Type="Self.Room" Multiplicity="0..1" />
+          <End Role="TableInfo" Type="Self.TableInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TableInfo">
+              <PropertyRef Name="RoomID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CoffeeModelStoreContainer">
+          <EntitySet Name="Bill" EntityType="Self.Bill" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BillInfo" EntityType="Self.BillInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CustomerType" EntityType="Self.CustomerType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MealType" EntityType="Self.MealType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductApplyForPromotion" EntityType="Self.ProductApplyForPromotion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductType" EntityType="Self.ProductType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Promotion" EntityType="Self.Promotion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PromotionAndBill" EntityType="Self.PromotionAndBill" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Room" EntityType="Self.Room" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TableInfo" EntityType="Self.TableInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Unit" EntityType="Self.Unit" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Bill_1" Association="Self.FK_Bill_1">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="Bill" EntitySet="Bill" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bill_2" Association="Self.FK_Bill_2">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="Bill" EntitySet="Bill" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bill_3" Association="Self.FK_Bill_3">
+            <End Role="TableInfo" EntitySet="TableInfo" />
+            <End Role="Bill" EntitySet="Bill" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BillInfo_1" Association="Self.FK_BillInfo_1">
+            <End Role="Bill" EntitySet="Bill" />
+            <End Role="BillInfo" EntitySet="BillInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BillInfo_2" Association="Self.FK_BillInfo_2">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="BillInfo" EntitySet="BillInfo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customer_1" Association="Self.FK_Customer_1">
+            <End Role="CustomerType" EntitySet="CustomerType" />
+            <End Role="Customer" EntitySet="Customer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_1" Association="Self.FK_Product_1">
+            <End Role="Unit" EntitySet="Unit" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_2" Association="Self.FK_Product_2">
+            <End Role="ProductType" EntitySet="ProductType" />
+            <End Role="Product" EntitySet="Product" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductApplyForPromotion_1" Association="Self.FK_ProductApplyForPromotion_1">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="ProductApplyForPromotion" EntitySet="ProductApplyForPromotion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductApplyForPromotion_2" Association="Self.FK_ProductApplyForPromotion_2">
+            <End Role="Promotion" EntitySet="Promotion" />
+            <End Role="ProductApplyForPromotion" EntitySet="ProductApplyForPromotion" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductType_1" Association="Self.FK_ProductType_1">
+            <End Role="MealType" EntitySet="MealType" />
+            <End Role="ProductType" EntitySet="ProductType" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PromotionAndBill_1" Association="Self.FK_PromotionAndBill_1">
+            <End Role="Bill" EntitySet="Bill" />
+            <End Role="PromotionAndBill" EntitySet="PromotionAndBill" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PromotionAndBill_2" Association="Self.FK_PromotionAndBill_2">
+            <End Role="Promotion" EntitySet="Promotion" />
+            <End Role="PromotionAndBill" EntitySet="PromotionAndBill" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TableInfo_1" Association="Self.FK_TableInfo_1">
+            <End Role="Room" EntitySet="Room" />
+            <End Role="TableInfo" EntitySet="TableInfo" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CoffeeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="TimeCoffeeEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Bills" EntityType="CoffeeModel.Bill" />
+          <EntitySet Name="BillInfoes" EntityType="CoffeeModel.BillInfo" />
+          <EntitySet Name="Customers" EntityType="CoffeeModel.Customer" />
+          <EntitySet Name="CustomerTypes" EntityType="CoffeeModel.CustomerType" />
+          <EntitySet Name="Employees" EntityType="CoffeeModel.Employee" />
+          <EntitySet Name="MealTypes" EntityType="CoffeeModel.MealType" />
+          <EntitySet Name="Products" EntityType="CoffeeModel.Product" />
+          <EntitySet Name="ProductApplyForPromotions" EntityType="CoffeeModel.ProductApplyForPromotion" />
+          <EntitySet Name="ProductTypes" EntityType="CoffeeModel.ProductType" />
+          <EntitySet Name="Promotions" EntityType="CoffeeModel.Promotion" />
+          <EntitySet Name="PromotionAndBills" EntityType="CoffeeModel.PromotionAndBill" />
+          <EntitySet Name="Rooms" EntityType="CoffeeModel.Room" />
+          <EntitySet Name="TableInfoes" EntityType="CoffeeModel.TableInfo" />
+          <EntitySet Name="Units" EntityType="CoffeeModel.Unit" />
+          <AssociationSet Name="FK_Bill_1" Association="CoffeeModel.FK_Bill_1">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="Bill" EntitySet="Bills" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bill_2" Association="CoffeeModel.FK_Bill_2">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Bill" EntitySet="Bills" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bill_3" Association="CoffeeModel.FK_Bill_3">
+            <End Role="TableInfo" EntitySet="TableInfoes" />
+            <End Role="Bill" EntitySet="Bills" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BillInfo_1" Association="CoffeeModel.FK_BillInfo_1">
+            <End Role="Bill" EntitySet="Bills" />
+            <End Role="BillInfo" EntitySet="BillInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PromotionAndBill_1" Association="CoffeeModel.FK_PromotionAndBill_1">
+            <End Role="Bill" EntitySet="Bills" />
+            <End Role="PromotionAndBill" EntitySet="PromotionAndBills" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BillInfo_2" Association="CoffeeModel.FK_BillInfo_2">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="BillInfo" EntitySet="BillInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customer_1" Association="CoffeeModel.FK_Customer_1">
+            <End Role="CustomerType" EntitySet="CustomerTypes" />
+            <End Role="Customer" EntitySet="Customers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductType_1" Association="CoffeeModel.FK_ProductType_1">
+            <End Role="MealType" EntitySet="MealTypes" />
+            <End Role="ProductType" EntitySet="ProductTypes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_1" Association="CoffeeModel.FK_Product_1">
+            <End Role="Unit" EntitySet="Units" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Product_2" Association="CoffeeModel.FK_Product_2">
+            <End Role="ProductType" EntitySet="ProductTypes" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductApplyForPromotion_1" Association="CoffeeModel.FK_ProductApplyForPromotion_1">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="ProductApplyForPromotion" EntitySet="ProductApplyForPromotions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductApplyForPromotion_2" Association="CoffeeModel.FK_ProductApplyForPromotion_2">
+            <End Role="Promotion" EntitySet="Promotions" />
+            <End Role="ProductApplyForPromotion" EntitySet="ProductApplyForPromotions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PromotionAndBill_2" Association="CoffeeModel.FK_PromotionAndBill_2">
+            <End Role="Promotion" EntitySet="Promotions" />
+            <End Role="PromotionAndBill" EntitySet="PromotionAndBills" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TableInfo_1" Association="CoffeeModel.FK_TableInfo_1">
+            <End Role="Room" EntitySet="Rooms" />
+            <End Role="TableInfo" EntitySet="TableInfoes" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Bill">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="DateTime" Precision="0" />
+          <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerPhone" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="TableID" Type="Int32" />
+          <Property Name="OriginBillValue" Type="Double" />
+          <Property Name="TrueBillValue" Type="Double" />
+          <Property Name="PointAdd" Type="Double" />
+          <Property Name="PointSub" Type="Int32" />
+          <Property Name="IsPaid" Type="Boolean" />
+          <Property Name="IsUsingAtStore" Type="Boolean" />
+          <Property Name="IsCusMember" Type="Boolean" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Employee" Relationship="CoffeeModel.FK_Bill_1" FromRole="Bill" ToRole="Employee" />
+          <NavigationProperty Name="Customer" Relationship="CoffeeModel.FK_Bill_2" FromRole="Bill" ToRole="Customer" />
+          <NavigationProperty Name="TableInfo" Relationship="CoffeeModel.FK_Bill_3" FromRole="Bill" ToRole="TableInfo" />
+          <NavigationProperty Name="BillInfoes" Relationship="CoffeeModel.FK_BillInfo_1" FromRole="Bill" ToRole="BillInfo" />
+          <NavigationProperty Name="PromotionAndBills" Relationship="CoffeeModel.FK_PromotionAndBill_1" FromRole="Bill" ToRole="PromotionAndBill" />
+        </EntityType>
+        <EntityType Name="BillInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BillID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ProductID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="ProductName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="Price" Type="Int32" />
+          <Property Name="IntoMoney" Type="Int32" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsGift" Type="Boolean" />
+          <NavigationProperty Name="Bill" Relationship="CoffeeModel.FK_BillInfo_1" FromRole="BillInfo" ToRole="Bill" />
+          <NavigationProperty Name="Product" Relationship="CoffeeModel.FK_BillInfo_2" FromRole="BillInfo" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="Phone" />
+          </Key>
+          <Property Name="DisplayName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerID" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="TotalPurchased" Type="Int32" />
+          <Property Name="CurrentPoint" Type="Double" />
+          <Property Name="CustomerTypeID" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Bills" Relationship="CoffeeModel.FK_Bill_2" FromRole="Customer" ToRole="Bill" />
+          <NavigationProperty Name="CustomerType" Relationship="CoffeeModel.FK_Customer_1" FromRole="Customer" ToRole="CustomerType" />
+        </EntityType>
+        <EntityType Name="CustomerType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DisplayName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AddPoint" Type="Double" />
+          <Property Name="TotalPurchaseNeeded" Type="Int32" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Customers" Relationship="CoffeeModel.FK_Customer_1" FromRole="CustomerType" ToRole="Customer" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="UserName" />
+          </Key>
+          <Property Name="FullName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DateOfBirth" Type="DateTime" Precision="0" />
+          <Property Name="Sex" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="EAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="EPassword" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AdminPermission" Type="Boolean" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Bills" Relationship="CoffeeModel.FK_Bill_1" FromRole="Employee" ToRole="Bill" />
+        </EntityType>
+        <EntityType Name="MealType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DisplayName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ProductTypes" Relationship="CoffeeModel.FK_ProductType_1" FromRole="MealType" ToRole="ProductType" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="DisplayName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProductTypeID" Type="Int32" />
+          <Property Name="BuyValue" Type="Int32" />
+          <Property Name="SellValue" Type="Int32" />
+          <Property Name="MinimumQuantity" Type="Int32" />
+          <Property Name="CurrentQuantity" Type="Int32" />
+          <Property Name="UnitID" Type="Int32" />
+          <Property Name="ProductImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsTrading" Type="Boolean" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="BillInfoes" Relationship="CoffeeModel.FK_BillInfo_2" FromRole="Product" ToRole="BillInfo" />
+          <NavigationProperty Name="Unit" Relationship="CoffeeModel.FK_Product_1" FromRole="Product" ToRole="Unit" />
+          <NavigationProperty Name="ProductType" Relationship="CoffeeModel.FK_Product_2" FromRole="Product" ToRole="ProductType" />
+          <NavigationProperty Name="ProductApplyForPromotions" Relationship="CoffeeModel.FK_ProductApplyForPromotion_1" FromRole="Product" ToRole="ProductApplyForPromotion" />
+        </EntityType>
+        <EntityType Name="ProductApplyForPromotion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PPDisplayName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProductAmount" Type="Int32" />
+          <Property Name="PromotionId" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ProductType" Type="Boolean" />
+          <NavigationProperty Name="Product" Relationship="CoffeeModel.FK_ProductApplyForPromotion_1" FromRole="ProductApplyForPromotion" ToRole="Product" />
+          <NavigationProperty Name="Promotion" Relationship="CoffeeModel.FK_ProductApplyForPromotion_2" FromRole="ProductApplyForPromotion" ToRole="Promotion" />
+        </EntityType>
+        <EntityType Name="ProductType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DisplayName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MealTypeID" Type="Int32" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="MealType" Relationship="CoffeeModel.FK_ProductType_1" FromRole="ProductType" ToRole="MealType" />
+          <NavigationProperty Name="Products" Relationship="CoffeeModel.FK_Product_2" FromRole="ProductType" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Promotion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DisplayName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FromDate" Type="DateTime" Precision="0" />
+          <Property Name="ToDate" Type="DateTime" Precision="0" />
+          <Property Name="AmountValue" Type="Int32" />
+          <Property Name="PercentValue" Type="Double" />
+          <Property Name="PriceBillRequire" Type="Int32" />
+          <Property Name="PromotionType" Type="Int32" />
+          <Property Name="IsApply" Type="Boolean" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ProductApplyForPromotions" Relationship="CoffeeModel.FK_ProductApplyForPromotion_2" FromRole="Promotion" ToRole="ProductApplyForPromotion" />
+          <NavigationProperty Name="PromotionAndBills" Relationship="CoffeeModel.FK_PromotionAndBill_2" FromRole="Promotion" ToRole="PromotionAndBill" />
+        </EntityType>
+        <EntityType Name="PromotionAndBill">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BillId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="PromotionId" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="PromotionName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Bill" Relationship="CoffeeModel.FK_PromotionAndBill_1" FromRole="PromotionAndBill" ToRole="Bill" />
+          <NavigationProperty Name="Promotion" Relationship="CoffeeModel.FK_PromotionAndBill_2" FromRole="PromotionAndBill" ToRole="Promotion" />
+        </EntityType>
+        <EntityType Name="Room">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DisplayName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TableInfoes" Relationship="CoffeeModel.FK_TableInfo_1" FromRole="Room" ToRole="TableInfo" />
+        </EntityType>
+        <EntityType Name="TableInfo">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DisplayName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ChairAmount" Type="Int16" />
+          <Property Name="IsUsing" Type="Boolean" />
+          <Property Name="RoomID" Type="Int32" />
+          <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Bills" Relationship="CoffeeModel.FK_Bill_3" FromRole="TableInfo" ToRole="Bill" />
+          <NavigationProperty Name="Room" Relationship="CoffeeModel.FK_TableInfo_1" FromRole="TableInfo" ToRole="Room" />
+        </EntityType>
+        <EntityType Name="Unit">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DisplayName" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Products" Relationship="CoffeeModel.FK_Product_1" FromRole="Unit" ToRole="Product" />
+        </EntityType>
+        <Association Name="FK_Bill_1">
+          <End Type="CoffeeModel.Employee" Role="Employee" Multiplicity="0..1" />
+          <End Type="CoffeeModel.Bill" Role="Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="UserName" />
+            </Principal>
+            <Dependent Role="Bill">
+              <PropertyRef Name="UserName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bill_2">
+          <End Type="CoffeeModel.Customer" Role="Customer" Multiplicity="0..1" />
+          <End Type="CoffeeModel.Bill" Role="Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="Phone" />
+            </Principal>
+            <Dependent Role="Bill">
+              <PropertyRef Name="CustomerPhone" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bill_3">
+          <End Type="CoffeeModel.TableInfo" Role="TableInfo" Multiplicity="0..1" />
+          <End Type="CoffeeModel.Bill" Role="Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TableInfo">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Bill">
+              <PropertyRef Name="TableID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BillInfo_1">
+          <End Type="CoffeeModel.Bill" Role="Bill" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="CoffeeModel.BillInfo" Role="BillInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bill">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BillInfo">
+              <PropertyRef Name="BillID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PromotionAndBill_1">
+          <End Type="CoffeeModel.Bill" Role="Bill" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="CoffeeModel.PromotionAndBill" Role="PromotionAndBill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Bill">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PromotionAndBill">
+              <PropertyRef Name="BillId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BillInfo_2">
+          <End Type="CoffeeModel.Product" Role="Product" Multiplicity="0..1" />
+          <End Type="CoffeeModel.BillInfo" Role="BillInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="BillInfo">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Customer_1">
+          <End Type="CoffeeModel.CustomerType" Role="CustomerType" Multiplicity="0..1" />
+          <End Type="CoffeeModel.Customer" Role="Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CustomerType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="CustomerTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductType_1">
+          <End Type="CoffeeModel.MealType" Role="MealType" Multiplicity="0..1" />
+          <End Type="CoffeeModel.ProductType" Role="ProductType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="MealType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductType">
+              <PropertyRef Name="MealTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_1">
+          <End Type="CoffeeModel.Unit" Role="Unit" Multiplicity="0..1" />
+          <End Type="CoffeeModel.Product" Role="Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Unit">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="UnitID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Product_2">
+          <End Type="CoffeeModel.ProductType" Role="ProductType" Multiplicity="0..1" />
+          <End Type="CoffeeModel.Product" Role="Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="ProductTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductApplyForPromotion_1">
+          <End Type="CoffeeModel.Product" Role="Product" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="CoffeeModel.ProductApplyForPromotion" Role="ProductApplyForPromotion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductApplyForPromotion">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductApplyForPromotion_2">
+          <End Type="CoffeeModel.Promotion" Role="Promotion" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="CoffeeModel.ProductApplyForPromotion" Role="ProductApplyForPromotion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Promotion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ProductApplyForPromotion">
+              <PropertyRef Name="PromotionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PromotionAndBill_2">
+          <End Type="CoffeeModel.Promotion" Role="Promotion" Multiplicity="0..1" />
+          <End Type="CoffeeModel.PromotionAndBill" Role="PromotionAndBill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Promotion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PromotionAndBill">
+              <PropertyRef Name="PromotionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TableInfo_1">
+          <End Type="CoffeeModel.Room" Role="Room" Multiplicity="0..1" />
+          <End Type="CoffeeModel.TableInfo" Role="TableInfo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TableInfo">
+              <PropertyRef Name="RoomID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CoffeeModelStoreContainer" CdmEntityContainer="TimeCoffeeEntities">
+          <EntitySetMapping Name="Bills">
+            <EntityTypeMapping TypeName="CoffeeModel.Bill">
+              <MappingFragment StoreEntitySet="Bill">
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="IsCusMember" ColumnName="IsCusMember" />
+                <ScalarProperty Name="IsUsingAtStore" ColumnName="IsUsingAtStore" />
+                <ScalarProperty Name="IsPaid" ColumnName="IsPaid" />
+                <ScalarProperty Name="PointSub" ColumnName="PointSub" />
+                <ScalarProperty Name="PointAdd" ColumnName="PointAdd" />
+                <ScalarProperty Name="TrueBillValue" ColumnName="TrueBillValue" />
+                <ScalarProperty Name="OriginBillValue" ColumnName="OriginBillValue" />
+                <ScalarProperty Name="TableID" ColumnName="TableID" />
+                <ScalarProperty Name="CustomerPhone" ColumnName="CustomerPhone" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BillInfoes">
+            <EntityTypeMapping TypeName="CoffeeModel.BillInfo">
+              <MappingFragment StoreEntitySet="BillInfo">
+                <ScalarProperty Name="IsGift" ColumnName="IsGift" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="IntoMoney" ColumnName="IntoMoney" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="BillID" ColumnName="BillID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="CoffeeModel.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CustomerTypeID" ColumnName="CustomerTypeID" />
+                <ScalarProperty Name="CurrentPoint" ColumnName="CurrentPoint" />
+                <ScalarProperty Name="TotalPurchased" ColumnName="TotalPurchased" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerTypes">
+            <EntityTypeMapping TypeName="CoffeeModel.CustomerType">
+              <MappingFragment StoreEntitySet="CustomerType">
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="TotalPurchaseNeeded" ColumnName="TotalPurchaseNeeded" />
+                <ScalarProperty Name="AddPoint" ColumnName="AddPoint" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="CoffeeModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="AdminPermission" ColumnName="AdminPermission" />
+                <ScalarProperty Name="EPassword" ColumnName="EPassword" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="EAddress" ColumnName="EAddress" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Sex" ColumnName="Sex" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MealTypes">
+            <EntityTypeMapping TypeName="CoffeeModel.MealType">
+              <MappingFragment StoreEntitySet="MealType">
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="CoffeeModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="IsTrading" ColumnName="IsTrading" />
+                <ScalarProperty Name="ProductImage" ColumnName="ProductImage" />
+                <ScalarProperty Name="UnitID" ColumnName="UnitID" />
+                <ScalarProperty Name="CurrentQuantity" ColumnName="CurrentQuantity" />
+                <ScalarProperty Name="MinimumQuantity" ColumnName="MinimumQuantity" />
+                <ScalarProperty Name="SellValue" ColumnName="SellValue" />
+                <ScalarProperty Name="BuyValue" ColumnName="BuyValue" />
+                <ScalarProperty Name="ProductTypeID" ColumnName="ProductTypeID" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductApplyForPromotions">
+            <EntityTypeMapping TypeName="CoffeeModel.ProductApplyForPromotion">
+              <MappingFragment StoreEntitySet="ProductApplyForPromotion">
+                <ScalarProperty Name="ProductType" ColumnName="ProductType" />
+                <ScalarProperty Name="PromotionId" ColumnName="PromotionId" />
+                <ScalarProperty Name="ProductAmount" ColumnName="ProductAmount" />
+                <ScalarProperty Name="PPDisplayName" ColumnName="PPDisplayName" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductTypes">
+            <EntityTypeMapping TypeName="CoffeeModel.ProductType">
+              <MappingFragment StoreEntitySet="ProductType">
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="MealTypeID" ColumnName="MealTypeID" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Promotions">
+            <EntityTypeMapping TypeName="CoffeeModel.Promotion">
+              <MappingFragment StoreEntitySet="Promotion">
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="IsApply" ColumnName="IsApply" />
+                <ScalarProperty Name="PromotionType" ColumnName="PromotionType" />
+                <ScalarProperty Name="PriceBillRequire" ColumnName="PriceBillRequire" />
+                <ScalarProperty Name="PercentValue" ColumnName="PercentValue" />
+                <ScalarProperty Name="AmountValue" ColumnName="AmountValue" />
+                <ScalarProperty Name="ToDate" ColumnName="ToDate" />
+                <ScalarProperty Name="FromDate" ColumnName="FromDate" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PromotionAndBills">
+            <EntityTypeMapping TypeName="CoffeeModel.PromotionAndBill">
+              <MappingFragment StoreEntitySet="PromotionAndBill">
+                <ScalarProperty Name="PromotionName" ColumnName="PromotionName" />
+                <ScalarProperty Name="PromotionId" ColumnName="PromotionId" />
+                <ScalarProperty Name="BillId" ColumnName="BillId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rooms">
+            <EntityTypeMapping TypeName="CoffeeModel.Room">
+              <MappingFragment StoreEntitySet="Room">
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TableInfoes">
+            <EntityTypeMapping TypeName="CoffeeModel.TableInfo">
+              <MappingFragment StoreEntitySet="TableInfo">
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="RoomID" ColumnName="RoomID" />
+                <ScalarProperty Name="IsUsing" ColumnName="IsUsing" />
+                <ScalarProperty Name="ChairAmount" ColumnName="ChairAmount" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Units">
+            <EntityTypeMapping TypeName="CoffeeModel.Unit">
+              <MappingFragment StoreEntitySet="Unit">
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

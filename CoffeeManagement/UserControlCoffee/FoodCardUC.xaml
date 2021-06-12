@@ -1,0 +1,91 @@
+﻿<UserControl x:Class="CoffeeManagement.UserControlCoffee.FoodCardUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CoffeeManagement.UserControlCoffee"
+             mc:Ignorable="d" 
+             
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+     TextElement.FontWeight="Regular"
+     TextElement.FontSize="13"
+     TextOptions.TextFormattingMode="Ideal"
+     TextOptions.TextRenderingMode="Auto"
+     Background="{DynamicResource MaterialDesignPaper}"
+     FontFamily="{DynamicResource MaterialDesignFont}" 
+                     
+             Name="foodCardUC"
+             
+             d:DesignHeight="200" d:DesignWidth="170">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadCommand}" CommandParameter="{Binding ElementName=foodCardUC}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <materialDesign:Flipper materialDesign:ShadowAssist.ShadowDepth="Depth0">
+        <materialDesign:Flipper.FrontContent>
+            <materialDesign:Card Background="SandyBrown">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="100"></RowDefinition>
+                        <RowDefinition Height="35"></RowDefinition>
+                        <RowDefinition Height="25"></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Image Grid.Row="0" Margin="3" Source="{Binding ProductImage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    </Image>
+                    <TextBox Grid.Row="1" FontSize="11" BorderBrush="Transparent" TextAlignment="Center" Text="{Binding ProductName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" AcceptsReturn="True" TextWrapping="Wrap"/>
+
+                    <Label Grid.Row="2" FontSize="13" Content="{Binding ProductPrice, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" HorizontalAlignment="Center" Background="Wheat" FontWeight="Bold"></Label>
+
+                    <Button Grid.Row="3" Margin="3" Style="{StaticResource MaterialDesignRaisedButton}"  
+                                Command="{x:Static materialDesign:Flipper.FlipCommand}" x:Name="btnFlip1"
+                                Content="Chọn" >
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="Click">
+                                <i:InvokeCommandAction Command="{Binding Btn1ClickCommand}" CommandParameter="{Binding ElementName=foodCardUC}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Button>
+                    
+                </Grid>
+            </materialDesign:Card>
+        </materialDesign:Flipper.FrontContent>
+        <materialDesign:Flipper.BackContent>
+            <materialDesign:Card Height="200" Width="170">
+                <Grid Margin="3">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition Height="auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0 5">
+                        <Button Style="{StaticResource MaterialDesignToolForegroundButton}" x:Name="btnFlip2"
+                                Command="{x:Static materialDesign:Flipper.FlipCommand}" HorizontalAlignment="Left">
+                            <materialDesign:PackIcon Kind="ArrowLeft" HorizontalAlignment="Right" />
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <i:InvokeCommandAction Command="{Binding Btn2ClickCommand}" CommandParameter="{Binding ElementName=foodCardUC}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                        <TextBox materialDesign:HintAssist.Hint="Số lượng" Margin="15 0 0 0" PreviewTextInput="PreviewTextInput"
+                                 Text="{Binding ProductAmount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <TextBox Grid.Row="1" Style="{StaticResource MaterialDesignOutlinedTextBox}" VerticalAlignment="Center"  Height="110" Margin="3 0"
+                     Text="{Binding Note, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" materialDesign:HintAssist.Hint="Ghi chú..."/>
+                    <Grid Grid.Row="2">
+                        <Button Height="25" Width="100" VerticalAlignment="Center" Margin="0 5"
+                                Command="{Binding SelectCommand}" CommandParameter="{Binding ElementName=foodCardUC}">
+                            <materialDesign:PackIcon Kind="Check"/>
+                        </Button>
+                    </Grid>
+                </Grid>
+            </materialDesign:Card>
+        </materialDesign:Flipper.BackContent>
+    </materialDesign:Flipper>
+</UserControl>

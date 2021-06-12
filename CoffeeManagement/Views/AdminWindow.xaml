@@ -1,0 +1,109 @@
+﻿<Window x:Class="CoffeeManagement.Views.AdminWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CoffeeManagement.Views"
+        mc:Ignorable="d"
+        
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+     TextElement.FontWeight="Regular"
+     TextElement.FontSize="13"
+     TextOptions.TextFormattingMode="Ideal"
+     TextOptions.TextRenderingMode="Auto"
+     Background="{DynamicResource MaterialDesignPaper}"
+     FontFamily="{DynamicResource MaterialDesignFont}"       
+                
+        WindowStartupLocation="CenterScreen"
+        DataContext="{StaticResource AdminVM}"
+        Name="adminWindow"
+        Title="Coffee Management" Height="720" Width="1280">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadedCommand}" CommandParameter="{Binding ElementName=GridRow1}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <ComboBox materialDesign:ComboBoxAssist.ShowSelectedItem="True"
+                    Margin="3" Text="{Binding UCSelectedProduct, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" 
+                          x:Name="ProductCB"
+                    Style="{StaticResource MaterialDesignFilledComboBox}"
+                    materialDesign:HintAssist.Hint="Hàng hóa"   
+                    Width="auto" SelectionChanged="ProductCB_SelectionChanged">                        
+                    <ComboBoxItem Content="Thực đơn"/>                        
+                    <ComboBoxItem Content="Nhóm hàng" />
+                    <ComboBoxItem Content="Sản phẩm" />
+                    <ComboBoxItem Content="Chương trình khuyến mãi" />
+                    <ComboBoxItem Content="Quản lý đơn vị đo" />
+                </ComboBox>                
+            </Grid>
+            <Grid Grid.Column="1">
+                <ComboBox Margin="3" Text="{Binding UCSelectedTable, Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}"
+                          x:Name="TableCB" materialDesign:ComboBoxAssist.ShowSelectedItem="True"
+                    Style="{StaticResource MaterialDesignFilledComboBox}"    
+                    materialDesign:HintAssist.Hint="Phòng/Bàn"   
+                    Width="auto" SelectionChanged="TableCB_SelectionChanged">
+                    <ComboBoxItem Content="Phòng"/>
+                    <ComboBoxItem Content="Bàn" />
+                </ComboBox>
+            </Grid>
+            <Grid Grid.Column="2">
+                <ComboBox Margin="3" Text="{Binding UCSelectedCustomer, Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}"
+                          x:Name="CustomerCB" materialDesign:ComboBoxAssist.ShowSelectedItem="True"
+                    Style="{StaticResource MaterialDesignFilledComboBox}"    
+                    materialDesign:HintAssist.Hint="Khách hàng"   
+                    Width="auto" SelectionChanged="CustomerCB_SelectionChanged">
+                    <ComboBoxItem Content="Danh sách khách hàng"/>
+                    <ComboBoxItem Content="Thẻ thành viên" />
+                </ComboBox>
+            </Grid>
+            <Grid Grid.Column="3">
+                <ComboBox Margin="3" Text="{Binding UCSelectedEmployee, Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}"
+                          x:Name="EmployeeCB" materialDesign:ComboBoxAssist.ShowSelectedItem="True"
+                    Style="{StaticResource MaterialDesignFilledComboBox}"    
+                    materialDesign:HintAssist.Hint="Nhân viên"   
+                    Width="auto" SelectionChanged="EmployeeCB_SelectionChanged">
+                    <ComboBoxItem Content="Quản lý nhân viên"/>
+                </ComboBox>
+            </Grid>
+            <Grid Grid.Column="4">
+                <ComboBox Margin="3" Text="{Binding UCSelectedBill, Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}"
+                          x:Name="BillCB" materialDesign:ComboBoxAssist.ShowSelectedItem="True"
+                    Style="{StaticResource MaterialDesignFilledComboBox}"    
+                    materialDesign:HintAssist.Hint="Hóa đơn"   
+                    Width="auto" SelectionChanged="BillCB_SelectionChanged">
+                    <ComboBoxItem Content="Danh sách hóa đơn"/>
+                </ComboBox>
+            </Grid>
+            <Grid Grid.Column="5">
+                <ComboBox Margin="3" Text="{Binding UCSelectedReport, Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}"
+                          x:Name="ReportCB" materialDesign:ComboBoxAssist.ShowSelectedItem="True"
+                    Style="{StaticResource MaterialDesignFilledComboBox}"    
+                    materialDesign:HintAssist.Hint="Báo cáo"   
+                    Width="auto" SelectionChanged="ReportCB_SelectionChanged">
+                    <ComboBoxItem Content="Báo cáo kinh doanh"/>
+                </ComboBox>
+            </Grid>
+        </Grid>
+        <Grid Grid.Row="1" x:Name="GridRow1">
+            
+        </Grid>
+    </Grid>
+    
+</Window>

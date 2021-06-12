@@ -1,0 +1,180 @@
+﻿<UserControl x:Class="CoffeeManagement.UserControlCoffee.ProductUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CoffeeManagement.UserControlCoffee"
+             mc:Ignorable="d" 
+             
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+     TextElement.FontWeight="Regular"
+     TextElement.FontSize="13"
+     TextOptions.TextFormattingMode="Ideal"
+     TextOptions.TextRenderingMode="Auto"
+     Background="{DynamicResource MaterialDesignPaper}"
+     FontFamily="{DynamicResource MaterialDesignFont}"  
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             
+             DataContext="{StaticResource ProductVM}"        
+             Name="productUC"
+             
+             d:DesignHeight="640" d:DesignWidth="1240">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadCommand}" CommandParameter="{Binding ElementName=productUC}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    
+    <UserControl.Resources>
+        <sys:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">7</sys:Double>
+        <sys:Double x:Key="{x:Static SystemParameters.HorizontalScrollBarHeightKey}">7</sys:Double>
+    </UserControl.Resources>
+    <materialDesign:Card Margin="10" Background="{DynamicResource PrimaryHueLightBrush}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}" Padding="5">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="7*"></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <!--cac element binding tu selected item-->
+                <materialDesign:Card Grid.Row="0" Margin="5" VerticalAlignment="Stretch">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                        <ListView ItemsSource="{Binding ListGrid}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" Name="ListViewProduct">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseDoubleClick">
+                                    <i:InvokeCommandAction Command="{Binding DoubleClickListViewCommand}" CommandParameter="{Binding ElementName=ListViewProduct}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <ListView.View>                                
+                                <GridView>
+                                    <GridViewColumn Header="Đang chọn">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox IsEnabled="False"
+                                                    IsChecked="{Binding Path=IsSelected, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}}"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Width="110" Header="Mã hàng" DisplayMemberBinding="{Binding Id}"></GridViewColumn>
+                                    <GridViewColumn Header="Tên hàng" DisplayMemberBinding="{Binding DisplayName}"></GridViewColumn>
+                                    <GridViewColumn Header="Nhóm hàng" DisplayMemberBinding="{Binding ProductType.DisplayName}"></GridViewColumn>
+                                    <GridViewColumn Width="110" Header="Giá mua" DisplayMemberBinding="{Binding BuyValue}"></GridViewColumn>
+                                    <GridViewColumn Width="110" Header="Giá bán" DisplayMemberBinding="{Binding SellValue}"></GridViewColumn>
+                                    <GridViewColumn Width="110" Header="Lượng tồn nhỏ nhất" DisplayMemberBinding="{Binding MinimumQuantity}"></GridViewColumn>
+                                    <GridViewColumn Width="110" Header="Tồn kho" DisplayMemberBinding="{Binding CurrentQuantity}"></GridViewColumn>
+                                    <GridViewColumn Width="110" Header="Đơn vị" DisplayMemberBinding="{Binding Unit.DisplayName}"></GridViewColumn>
+                                    <GridViewColumn Width="110" Header="Trạng thái" DisplayMemberBinding="{Binding IsTrading}"></GridViewColumn>
+                                    <GridViewColumn Header="Ghi chú" DisplayMemberBinding="{Binding Note}"></GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </ScrollViewer>
+                </materialDesign:Card>
+                <materialDesign:Card Grid.Row="1" Margin="5">
+                    <WrapPanel VerticalAlignment="Center" Grid.Column="0">
+                        <Button VerticalAlignment="Center" Command="{Binding AddCommand}" Content="Thêm" Margin="5" Width="100"></Button>                        
+                        <Button Command="{Binding DeleteCommand}" Content="Xóa" Margin="5" Width="100"></Button>
+                    </WrapPanel>
+                </materialDesign:Card>
+            </Grid>
+            <materialDesign:Card Grid.Column="1" Margin="5">                
+                <ScrollViewer VerticalScrollBarVisibility="Auto">                    
+                    <StackPanel>
+                        <GroupBox  Header="Tìm kiếm"  Margin="3">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <StackPanel>
+                                    <ComboBox ItemsSource="{Binding SearchList}" Name="SearchListCB" materialDesign:TextFieldAssist.HasClearButton="True"
+                                      Margin="3" SelectedItem="{Binding SelectedSearchList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                materialDesign:HintAssist.Hint="Tìm kiếm theo">
+                                    </ComboBox>
+                                    <TextBox  materialDesign:HintAssist.Hint="Nội dung tìm kiếm"  materialDesign:TextFieldAssist.HasClearButton="True" Margin="3"                                      
+                                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"  VerticalAlignment="Center" 
+                                              Text="{Binding SearchContent, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"/>
+                                </StackPanel>
+                            </ScrollViewer>                            
+                        </GroupBox>
+                        <GroupBox Header="Loại thực đơn" Margin="3" MaxHeight="150">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                                <StackPanel materialDesign:ScrollBarAssist.ButtonsVisibility="Visible" Name="mealTypeSP">
+                                    <CheckBox Content="Tất cả" Name="allMealType" 
+                                              Command="{Binding MealTypeCommand}" CommandParameter="{Binding ElementName=allMealType}"/>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </GroupBox>
+                        <GroupBox Header="Nhóm hàng" Margin="3" Name="productTypeGB" MaxHeight="200">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                                <StackPanel materialDesign:ScrollBarAssist.ButtonsVisibility="Visible" Name="proTypeSP">
+                                    <CheckBox Content="Tất cả" Name="allProductType" 
+                                              Command="{Binding ProductTypeCommand}" CommandParameter="{Binding ElementName=allProductType}"/>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </GroupBox>
+                        <GroupBox Header="Giá mua" Margin="3">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                                <StackPanel materialDesign:ScrollBarAssist.ButtonsVisibility="Visible" Name="buyValueSP">
+                                    <RadioButton Content="None" GroupName="BuyValue" Name="NoneBuyValue"
+                                                 Command="{Binding RadioButtonCommand}" CommandParameter="{Binding ElementName=NoneBuyValue}"/>
+                                    <RadioButton Content="Tăng dần" GroupName="BuyValue" Name="AscBuyValue"
+                                                 Command="{Binding RadioButtonCommand}" CommandParameter="{Binding ElementName=AscBuyValue}"/>
+                                    <RadioButton Content="Giảm dần" GroupName="BuyValue" Name="DecBuyValue"
+                                                 Command="{Binding RadioButtonCommand}" CommandParameter="{Binding ElementName=DecBuyValue}"/>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </GroupBox>
+                        <GroupBox Header="Giá bán" Margin="3">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                                <StackPanel materialDesign:ScrollBarAssist.ButtonsVisibility="Visible" Name="sellValueSP">
+                                    <RadioButton Content="None" GroupName="SellValue"
+                                                 Name="NoneSellValue"
+                                                 Command="{Binding RadioButtonCommand}" CommandParameter="{Binding ElementName=NoneSellValue}"/>
+                                    <RadioButton Content="Tăng dần" GroupName="SellValue"
+                                                 Name="AscSellValue"
+                                                 Command="{Binding RadioButtonCommand}" CommandParameter="{Binding ElementName=AscSellValue}"/>
+                                    <RadioButton Content="Giảm dần" GroupName="SellValue"
+                                                 Name="DecSellValue"
+                                                 Command="{Binding RadioButtonCommand}" CommandParameter="{Binding ElementName=DecSellValue}"/>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </GroupBox>
+                        <GroupBox Header="Tồn kho" Margin="3">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                                <StackPanel materialDesign:ScrollBarAssist.ButtonsVisibility="Visible" Name="wareHouse">
+                                    <RadioButton Content="None" GroupName="InWarehouse"
+                                                 Name="NoneWH"
+                                                 Command="{Binding RadioButtonCommand}" CommandParameter="{Binding ElementName=NoneWH}"/>
+                                    <RadioButton Content="Nhiều nhất" GroupName="InWarehouse"
+                                                 Name="MaxWH"
+                                                 Command="{Binding RadioButtonCommand}" CommandParameter="{Binding ElementName=MaxWH}"/>
+                                    <RadioButton Content="Ít nhất" GroupName="InWarehouse"
+                                                 Name="MinWH"
+                                                 Command="{Binding RadioButtonCommand}" CommandParameter="{Binding ElementName=MinWH}"/>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </GroupBox>
+                        <GroupBox Header="Trạng thái" Margin="3" MaxHeight="150">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                                <StackPanel materialDesign:ScrollBarAssist.ButtonsVisibility="Visible" Name="Trade">
+                                    <RadioButton Content="Tất cả" GroupName="State"
+                                                 Name="NoneState"
+                                                 Command="{Binding RadioButtonCommand}" CommandParameter="{Binding ElementName=NoneState}"/>
+                                    <RadioButton Content="Đang kinh doanh" GroupName="State"
+                                                 Name="TradingState"
+                                                 Command="{Binding RadioButtonCommand}" CommandParameter="{Binding ElementName=TradingState}"/>
+                                    <RadioButton Content="Ngừng kinh doanh" GroupName="State"
+                                                 Name="NotTradingState"
+                                                 Command="{Binding RadioButtonCommand}" CommandParameter="{Binding ElementName=NotTradingState}"/>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </GroupBox>
+                    </StackPanel>
+                </ScrollViewer>                
+            </materialDesign:Card>
+        </Grid>        
+    </materialDesign:Card>
+</UserControl>

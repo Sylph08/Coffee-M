@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="734f0330b329401383f49b694f6ab377" Name="Diagram1" ZoomLevel="47">
+        <EntityTypeShape EntityType="CoffeeModel.Bill" Width="1.5" PointX="5.25" PointY="4.125" />
+        <EntityTypeShape EntityType="CoffeeModel.BillInfo" Width="1.5" PointX="7.5" PointY="4.875" />
+        <EntityTypeShape EntityType="CoffeeModel.Customer" Width="1.5" PointX="3" PointY="10.125" />
+        <EntityTypeShape EntityType="CoffeeModel.CustomerType" Width="1.5" PointX="0.75" PointY="10.5" />
+        <EntityTypeShape EntityType="CoffeeModel.Employee" Width="1.5" PointX="3" PointY="13.75" />
+        <EntityTypeShape EntityType="CoffeeModel.MealType" Width="1.5" PointX="0.75" PointY="20.75" />
+        <EntityTypeShape EntityType="CoffeeModel.Product" Width="1.5" PointX="5.25" PointY="18.5" />
+        <EntityTypeShape EntityType="CoffeeModel.ProductApplyForPromotion" Width="1.5" PointX="10.5" PointY="10.25" />
+        <EntityTypeShape EntityType="CoffeeModel.ProductType" Width="1.5" PointX="3" PointY="20.5" />
+        <EntityTypeShape EntityType="CoffeeModel.Promotion" Width="1.5" PointX="8.25" PointY="0.75" />
+        <EntityTypeShape EntityType="CoffeeModel.PromotionAndBill" Width="1.5" PointX="10.5" PointY="5.375" />
+        <EntityTypeShape EntityType="CoffeeModel.Room" Width="1.5" PointX="0.75" PointY="5.5" />
+        <EntityTypeShape EntityType="CoffeeModel.TableInfo" Width="1.5" PointX="3" PointY="5.125" />
+        <EntityTypeShape EntityType="CoffeeModel.Unit" Width="1.5" PointX="3" PointY="18.125" />
+        <AssociationConnector Association="CoffeeModel.FK_Bill_1" />
+        <AssociationConnector Association="CoffeeModel.FK_Bill_2" />
+        <AssociationConnector Association="CoffeeModel.FK_Bill_3" />
+        <AssociationConnector Association="CoffeeModel.FK_BillInfo_1" />
+        <AssociationConnector Association="CoffeeModel.FK_PromotionAndBill_1" />
+        <AssociationConnector Association="CoffeeModel.FK_BillInfo_2" />
+        <AssociationConnector Association="CoffeeModel.FK_Customer_1" />
+        <AssociationConnector Association="CoffeeModel.FK_ProductType_1" />
+        <AssociationConnector Association="CoffeeModel.FK_Product_1" />
+        <AssociationConnector Association="CoffeeModel.FK_Product_2" />
+        <AssociationConnector Association="CoffeeModel.FK_ProductApplyForPromotion_1" />
+        <AssociationConnector Association="CoffeeModel.FK_ProductApplyForPromotion_2" />
+        <AssociationConnector Association="CoffeeModel.FK_PromotionAndBill_2" />
+        <AssociationConnector Association="CoffeeModel.FK_TableInfo_1" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

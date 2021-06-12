@@ -1,0 +1,148 @@
+﻿<Window x:Class="CoffeeManagement.Views.ProductDetail"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CoffeeManagement.Views"
+        mc:Ignorable="d"
+        
+    xmlns:validate="clr-namespace:CoffeeManagement.Garbage"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+     TextElement.FontWeight="Regular"
+     TextElement.FontSize="13"
+     TextOptions.TextFormattingMode="Ideal"
+     TextOptions.TextRenderingMode="Auto"
+     Background="{DynamicResource MaterialDesignPaper}"
+     FontFamily="{DynamicResource MaterialDesignFont}"  
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        
+        
+        DataContext="{StaticResource ProductDetailVM}"        
+             Name="productDetailWindow"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        
+        Title="Thông tin sản phẩm" Height="365" Width="900">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadCommand}" CommandParameter="{Binding ElementName=productDetailWindow}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid Name="GirdMain">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Name="GridRow0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <materialDesign:Card Margin="5" Grid.Column="0">
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="5">
+                        <TextBox materialDesign:HintAssist.Hint="Tên sản phẩm" Margin="5" materialDesign:TextFieldAssist.HasClearButton="True"
+                             Text="{Binding DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                              Width="410">
+                        </TextBox>
+                        <StackPanel Orientation="Horizontal">
+                            <ComboBox Margin="5 10 10 5" materialDesign:TextFieldAssist.HasClearButton="True" Width="140" Name="mealTypeCB"
+                              DisplayMemberPath="DisplayName" ItemsSource="{Binding MealTypeList}" SelectedItem="{Binding SelectedMealType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                              materialDesign:HintAssist.Hint="Thực đơn" materialDesign:HintAssist.HintOpacity=".26">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding LoadProductTypeCommand}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </ComboBox>
+                            <ComboBox Margin="20 10 5 5" materialDesign:TextFieldAssist.HasClearButton="True" Width="200" IsEnabled="{Binding Path=SelectedValue, ElementName=mealTypeCB}"
+                              DisplayMemberPath="DisplayName" ItemsSource="{Binding ProductTypeList}" SelectedItem="{Binding SelectedProductType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                              materialDesign:HintAssist.Hint="Nhóm hàng" materialDesign:HintAssist.HintOpacity=".26">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="SelectionChanged">
+                                        <i:InvokeCommandAction Command="{Binding LoadMealTypeFromProductTypeCommand}"/>
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox materialDesign:HintAssist.Hint="Giá mua" Margin="5" materialDesign:TextFieldAssist.HasClearButton="True"
+                             Text="{Binding BuyValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                             VerticalAlignment="Center" Width="170" PreviewTextInput="PreviewTextInput"/>
+                            <TextBox materialDesign:HintAssist.Hint="Giá bán" Margin="40 5 5 5" materialDesign:TextFieldAssist.HasClearButton="True"
+                             Text="{Binding SellValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                             VerticalAlignment="Center" Width="170" PreviewTextInput="PreviewTextInput"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBox materialDesign:HintAssist.Hint="Lượng tồn nhỏ nhất" Margin="5" materialDesign:TextFieldAssist.HasClearButton="True"
+                             Text="{Binding MinimumQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                             VerticalAlignment="Center" Width="170" PreviewTextInput="PreviewTextInput"/>
+                            <TextBox materialDesign:HintAssist.Hint="Tồn kho hiện tại" Margin="40 5 5 5" materialDesign:TextFieldAssist.HasClearButton="True"
+                             Text="{Binding CurrentQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                             VerticalAlignment="Center" Width="170" PreviewTextInput="PreviewTextInput"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <ComboBox Margin="5 10 10 5" materialDesign:TextFieldAssist.HasClearButton="True" Width="140"
+                              DisplayMemberPath="DisplayName" ItemsSource="{Binding UnitList}" SelectedItem="{Binding SelectedUnit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                              materialDesign:HintAssist.Hint="Đơn vị" materialDesign:HintAssist.HintOpacity=".26" />
+                            <ComboBox Margin="20 10 5 5" materialDesign:TextFieldAssist.HasClearButton="True" Width="200" 
+                                      DisplayMemberPath="DisplayName" ItemsSource="{Binding StateList}"
+                                      SelectedItem="{Binding SelectedState, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                              materialDesign:HintAssist.Hint="Trạng thái" materialDesign:HintAssist.HintOpacity=".26">
+                            </ComboBox>
+                        </StackPanel>
+                        <TextBox materialDesign:HintAssist.Hint="Ghi chú" Margin="5" materialDesign:TextFieldAssist.HasClearButton="True"
+                             Text="{Binding Note, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                             VerticalAlignment="Center" />
+                    </StackPanel>
+                </ScrollViewer>                
+            </materialDesign:Card>
+            <materialDesign:Card Grid.Column="1" Margin="5" Height="275" Width="436" Name="PictureCard">
+                <Image Name="productImage" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5" 
+                       materialDesign:HintAssist.Hint="Ảnh sản phẩm" Source="{Binding SelectedImage}" Stretch="Uniform">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="MouseLeftButtonDown">
+                            <i:InvokeCommandAction Command="{Binding LoadImageCommand}" CommandParameter="{Binding ElementName=productImage}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </Image>
+            </materialDesign:Card>
+        </Grid>        
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0" >
+                <Button Style="{StaticResource MaterialDesignRaisedAccentButton}" Margin="0" Width="50" HorizontalAlignment="Center"
+                         Name="SaveButton" ToolTip="Lưu" Background="Transparent" BorderBrush="Transparent"
+                         Command="{Binding SaveCommand}" CommandParameter="{Binding ElementName=productDetailWindow}" VerticalAlignment="Center">
+                    <materialDesign:PackIcon Kind="ContentSave" Height="25" Width="25" HorizontalAlignment="Center"/>
+                </Button>
+                <Button Width="50" Name="EditButton" ToolTip="Chỉnh sửa"  Background="Transparent" BorderBrush="Transparent" Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                        Command="{Binding EditCommand}" CommandParameter="{Binding ElementName=productDetailWindow}" 
+                        Margin="10 0 10 0" VerticalAlignment="Center" HorizontalAlignment="Left">
+                    <materialDesign:PackIcon Kind="ClipboardEdit" Height="22" Width="30" HorizontalAlignment="Center"/>
+                </Button>
+            </Grid>
+            <Grid Grid.Column="1" >
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Margin="0" Width="50" ToolTip="Tải ảnh" Background="Transparent" BorderBrush="Transparent" Style="{StaticResource MaterialDesignRaisedAccentButton}"
+                         Command="{Binding LoadImageCommand}" CommandParameter="{Binding ElementName=productImage}" VerticalAlignment="Center"
+                            x:Name="LoadImgBtn">
+                        <materialDesign:PackIcon Kind="ImageSearch" Height="22" Width="30" HorizontalAlignment="Center"/>
+                    </Button>
+                    <Button Width="50" ToolTip="Xóa ảnh" 
+                        Command="{Binding DeleteImageCommand}" CommandParameter="{Binding ElementName=productImage}" x:Name="DeleteImgBtn"
+                        Margin="10 0 10 0" VerticalAlignment="Center" Background="Transparent" BorderBrush="Transparent" Style="{StaticResource MaterialDesignRaisedAccentButton}">
+                        <materialDesign:PackIcon Kind="DeleteVariant" Height="25" Width="25" HorizontalAlignment="Center"/>
+                    </Button>
+                </StackPanel>
+                
+            </Grid>
+            
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,126 @@
+﻿<UserControl x:Class="CoffeeManagement.UserControlCoffee.ReportProfitUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CoffeeManagement.UserControlCoffee"
+             mc:Ignorable="d" 
+             
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+     TextElement.FontWeight="Regular"
+     TextElement.FontSize="13"
+     TextOptions.TextFormattingMode="Ideal"
+     TextOptions.TextRenderingMode="Auto"
+     Background="{DynamicResource MaterialDesignPaper}"
+     FontFamily="{DynamicResource MaterialDesignFont}"
+             xmlns:rv="clr-namespace:Microsoft.Reporting.WinForms;assembly=Microsoft.ReportViewer.WinForms" 
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             
+             DataContext="{StaticResource reportProfitVM}"        
+             Name="reportProfitUC"
+             
+            d:DesignHeight="640" d:DesignWidth="1240">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadCommand}" CommandParameter="{Binding ElementName=reportProfitUC}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <UserControl.Resources>
+        <sys:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">7</sys:Double>
+        <sys:Double x:Key="{x:Static SystemParameters.HorizontalScrollBarHeightKey}">7</sys:Double>
+    </UserControl.Resources>
+    <Grid Name="Main">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="4*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="auto">
+            <StackPanel Grid.Column="0" Margin="5 0 0 0">
+                <GroupBox Header="Báo cáo theo thời gian">
+                    <Grid IsEnabled="{Binding Path=IsChecked, ElementName=rbtDoanhthu}">
+                        <StackPanel>
+                            <RadioButton Content="Báo cáo theo ngày" Name="rbtDate" GroupName="groupRBT" 
+                                     IsChecked="{Binding DateCheck, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <DatePicker materialDesign:HintAssist.Hint="Từ ngày" Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
+                                            Text="{Binding txtFromDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            materialDesign:TextFieldAssist.HasClearButton="True" Margin="25 0 5 0"                                
+                                        IsEnabled="{Binding Path=IsChecked, ElementName=rbtDate}" Focusable="False"/>
+                            <DatePicker materialDesign:HintAssist.Hint="Đến ngày" Style="{StaticResource MaterialDesignFloatingHintDatePicker}" 
+                                            Text="{Binding txtToDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            materialDesign:TextFieldAssist.HasClearButton="True" Margin="25 0 5 0"
+                                IsEnabled="{Binding Path=IsChecked, ElementName=rbtDate}" Focusable="False"/>
+                            <Separator Margin="5">
+                                <Separator.RenderTransform>
+                                    <ScaleTransform ScaleY="3" />
+                                </Separator.RenderTransform>
+                            </Separator>
+                            <RadioButton Content="Báo cáo theo tháng" Name="rbtMonth" GroupName="groupRBT"
+                                     IsChecked="{Binding MonthCheck, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <StackPanel Orientation="Horizontal" IsEnabled="{Binding Path=IsChecked, ElementName=rbtMonth}">
+                                <TextBox  materialDesign:HintAssist.Hint="Từ"  materialDesign:TextFieldAssist.HasClearButton="True" Margin="3 0" PreviewTextInput="PreviewTextInput"                                      
+                                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"  VerticalAlignment="Center" Width="auto"
+                                              Text="{Binding FromMonth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox  materialDesign:HintAssist.Hint="Năm"  materialDesign:TextFieldAssist.HasClearButton="True" Margin="3 0" PreviewTextInput="PreviewTextInput"                                     
+                                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"  VerticalAlignment="Center" Width="auto"
+                                              Text="{Binding FromYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <materialDesign:PackIcon Kind="ArrowRightBold" VerticalAlignment="Bottom" Margin="4"/>
+                                <TextBox  materialDesign:HintAssist.Hint="Đến"  materialDesign:TextFieldAssist.HasClearButton="True" Margin="3 0"  PreviewTextInput="PreviewTextInput"                                     
+                                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"  VerticalAlignment="Center" Width="auto"
+                                              Text="{Binding ToMonth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox  materialDesign:HintAssist.Hint="Năm"  materialDesign:TextFieldAssist.HasClearButton="True" Margin="3 0" PreviewTextInput="PreviewTextInput"                                     
+                                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"  VerticalAlignment="Center" Width="auto"
+                                              Text="{Binding ToYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                            <Separator Margin="5">
+                                <Separator.RenderTransform>
+                                    <ScaleTransform ScaleY="3" />
+                                </Separator.RenderTransform>
+                            </Separator>
+                            <RadioButton Content="Báo cáo theo năm" Name="rbtYear" GroupName="groupRBT" 
+                                     IsChecked="{Binding YearCheck, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <StackPanel Orientation="Horizontal" IsEnabled="{Binding Path=IsChecked, ElementName=rbtYear}">
+                                <TextBox  materialDesign:HintAssist.Hint="Từ năm"  materialDesign:TextFieldAssist.HasClearButton="True" Margin="3 0" PreviewTextInput="PreviewTextInput"                                     
+                                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"  VerticalAlignment="Center" Width="auto"
+                                              Text="{Binding StartYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <materialDesign:PackIcon Kind="ArrowRightBold" VerticalAlignment="Bottom" Margin="10 4"/>
+                                <TextBox  materialDesign:HintAssist.Hint="Đến năm"  materialDesign:TextFieldAssist.HasClearButton="True" Margin="3 0" PreviewTextInput="PreviewTextInput"                                      
+                                              Style="{StaticResource MaterialDesignFloatingHintTextBox}"  VerticalAlignment="Center" Width="auto"
+                                              Text="{Binding EndYear, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+
+                        </StackPanel>
+                    </Grid>
+
+                </GroupBox>
+                <GroupBox Margin="0 5 0 0" Header="Báo cáo theo sản phẩm">
+                    <StackPanel >
+                        <RadioButton Content="Thống kê sản phẩm" GroupName="groupRBT" IsChecked="{Binding AllProductCheck, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <RadioButton Content="10SP bán chạy theo số lượng" GroupName="groupRBT" IsChecked="{Binding ProductQuantityCheck, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <RadioButton Content="10SP bán chạy theo doanh thu" GroupName="groupRBT" IsChecked="{Binding ProductProfitCheck, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Margin="0 5 0 0" Header="Báo cáo theo nhân viên">
+                    <StackPanel >
+                        <RadioButton Content="Thống kê nhân viên" GroupName="groupRBT" IsChecked="{Binding EmployeeCheck, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <RadioButton Content="7NV có doanh thu tốt nhất" GroupName="groupRBT" IsChecked="{Binding BestEmployeeCheck, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                </GroupBox>
+                <GroupBox Margin="0 5" Header="Báo cáo theo khách hàng">
+                    <StackPanel >
+                        <RadioButton Content="Thống kê khách hàng" GroupName="groupRBT" IsChecked="{Binding CustomerCheck, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <RadioButton Content="10 KH mua hàng nhiều nhất" GroupName="groupRBT" IsChecked="{Binding BestCustomerCheck, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+                </GroupBox>
+                <Button Background="CadetBlue" Margin="10 0" Height="26" Content="Xuất báo cáo" Command="{Binding ShowCommand}" CommandParameter="{Binding ElementName=reportProfitUC}"></Button>
+            </StackPanel>
+        </ScrollViewer>        
+        <Grid Grid.Column="1">
+            <WindowsFormsHost VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10">
+                <rv:ReportViewer x:Name="MainRV"></rv:ReportViewer>
+            </WindowsFormsHost>
+
+        </Grid>
+    </Grid>
+</UserControl>

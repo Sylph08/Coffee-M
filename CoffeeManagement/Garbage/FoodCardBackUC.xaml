@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="CoffeeManagement.UserControlCoffee.FoodCardBackUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CoffeeManagement.UserControlCoffee"
+             mc:Ignorable="d" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+     TextElement.FontWeight="Regular"
+     TextElement.FontSize="13"
+     TextOptions.TextFormattingMode="Ideal"
+     TextOptions.TextRenderingMode="Auto"
+     Background="{DynamicResource MaterialDesignPaper}"
+     FontFamily="{DynamicResource MaterialDesignFont}"  
+             
+                  
+             Name="productUC"
+             
+             d:DesignHeight="200" d:DesignWidth="170">
+    <materialDesign:Card Height="200" Width="170">
+        <Grid Margin="3">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0 5">
+                <Button Style="{StaticResource MaterialDesignToolForegroundButton}" Command="{x:Static materialDesign:Flipper.FlipCommand}" HorizontalAlignment="Left">
+                    <materialDesign:PackIcon Kind="ArrowLeft" HorizontalAlignment="Right" />
+                </Button>
+                <TextBox materialDesign:HintAssist.Hint="Số lượng" Margin="15 0 0 0"
+                                 Text="{Binding ProductAmount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" />
+            </StackPanel>
+            <TextBox Grid.Row="1" Style="{StaticResource MaterialDesignOutlinedTextBox}" VerticalAlignment="Center"  Height="110" Margin="3 0"
+                     Text="{Binding Note, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" materialDesign:HintAssist.Hint="Ghi chú..."/>
+            <Grid Grid.Row="2">
+                <Button Height="25" Width="100" VerticalAlignment="Center" ToolTip="" Margin="0 5"
+                                Command="{Binding SelectCommand}" CommandParameter="{Binding ElementName=foodCardUC}">
+                    <materialDesign:PackIcon Kind="Check"/>
+                </Button>
+            </Grid>
+        </Grid>
+    </materialDesign:Card>
+
+</UserControl>

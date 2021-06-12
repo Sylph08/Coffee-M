@@ -1,0 +1,346 @@
+﻿<Window x:Class="CoffeeManagement.Views.SaleWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CoffeeManagement.Views"
+        mc:Ignorable="d"
+        
+        xmlns:uc="clr-namespace:CoffeeManagement.UserControlCoffee"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+     TextElement.FontWeight="Regular"
+     TextElement.FontSize="13"
+     TextOptions.TextFormattingMode="Ideal"
+     TextOptions.TextRenderingMode="Auto"
+     Background="{DynamicResource MaterialDesignPaper}"
+     FontFamily="{DynamicResource MaterialDesignFont}"
+        
+        WindowStartupLocation="CenterScreen"
+        DataContext="{StaticResource SaleVM}"
+        Name="saleWindow"
+        ResizeMode="NoResize"
+        WindowStyle="None"
+        
+        Title="SaleWindow" Height="720" Width="1280">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadCommand}" CommandParameter="{Binding ElementName=saleWindow}"/>
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Closed">
+            <i:InvokeCommandAction Command="{Binding ClosedWindowCommand}" CommandParameter="{Binding ElementName=saleWindow}"/>
+        </i:EventTrigger>
+        <i:EventTrigger EventName="ContentRendered">
+            <i:InvokeCommandAction Command="{Binding ContentRenderedCommand}" CommandParameter="{Binding ElementName=saleWindow}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Window.Resources>
+        <sys:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">7</sys:Double>
+        <sys:Double x:Key="{x:Static SystemParameters.HorizontalScrollBarHeightKey}">7</sys:Double>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseLeftButtonDown">
+                    <i:InvokeCommandAction Command="{Binding MouseMoveWindowCommand}" CommandParameter="{Binding ElementName=saleWindow}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            <materialDesign:ColorZone Mode="PrimaryMid" Height="20">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Right" Background="Transparent" Orientation="Horizontal">
+                        <StackPanel.Resources>
+                            <Style TargetType="Button">
+                                <Setter Property="Margin" Value="2"></Setter>
+                                <Setter Property="Width" Value="20"></Setter>
+                            </Style>
+                        </StackPanel.Resources>
+                        <Button Command="{Binding MinimizeWindowCommand}" CommandParameter="{Binding ElementName=saleWindow}"
+                        ToolTip="Thu nhỏ" ToolBar.OverflowMode="Always" Background="LightYellow" >
+                            <materialDesign:PackIcon Kind="WindowMinimize" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+                        </Button>
+                        <Button Command="{Binding MaximizeWindowCommand}" CommandParameter="{Binding ElementName=saleWindow}" 
+                        ToolTip="Phóng to" ToolBar.OverflowMode="AsNeeded" Background="AliceBlue">
+                            <materialDesign:PackIcon Kind="WindowMaximize" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Button>
+                        <Button Command="{Binding CloseWindowCommand}" CommandParameter="{Binding ElementName=saleWindow}"
+                            ToolTip="Đóng" ToolBar.OverflowMode="AsNeeded" Background="OrangeRed">
+                            <materialDesign:PackIcon Kind="WindowClose" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Button>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                        <materialDesign:PopupBox Margin="0 -3 0 0" VerticalAlignment="Top">
+                            <StackPanel>
+                                <Button Content="Đổi mật khẩu" Command="{Binding ChangePasswordCommand}"/>
+                            </StackPanel>
+                        </materialDesign:PopupBox>
+                        <materialDesign:Chip Height="20" Background="Gray" Content="{Binding LoginEmployee.FullName}" IconBackground="{DynamicResource PrimaryHueLightBrush}" IconForeground="{DynamicResource PrimaryHueLightForegroundBrush}">
+                            <materialDesign:Chip.Icon>
+                                <materialDesign:PackIcon Kind="Account" />
+                            </materialDesign:Chip.Icon>
+                        </materialDesign:Chip>
+                    </StackPanel>
+
+                </DockPanel>
+            </materialDesign:ColorZone>
+        </Grid>
+        <materialDesign:Card Grid.Row="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <materialDesign:Card Margin="5" Grid.Column="0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <GroupBox Header="Hình thức mua" Margin="5" Grid.Row="0">
+                            <StackPanel Orientation="Horizontal">
+                                <RadioButton GroupName="groupBuy" Margin="3 0 70 0" Content="Mang về" IsChecked="{Binding BringHomeChecked}"/>
+                                <RadioButton GroupName="groupBuy" Name="AtStore" Content="Sử dụng tại quán" IsChecked="{Binding AtStoreChecked}"/>
+                                <ComboBox Margin="60 0 0 0" materialDesign:HintAssist.Hint="Chọn phòng" materialDesign:ComboBoxAssist.ClassicMode="True"
+                                          IsEnabled="{Binding Path=IsChecked, ElementName=AtStore}" materialDesign:TextFieldAssist.HasClearButton="True"
+                                          DisplayMemberPath="DisplayName" ItemsSource="{Binding RoomList}" 
+                                      SelectedItem="{Binding RoomSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <ComboBox Margin="60 0 0 0" materialDesign:HintAssist.Hint="Chọn bàn" materialDesign:ComboBoxAssist.ClassicMode="True"
+                                          IsEnabled="{Binding Path=IsChecked, ElementName=AtStore}" materialDesign:TextFieldAssist.HasClearButton="True"
+                                          DisplayMemberPath="DisplayName" ItemsSource="{Binding TableList}" 
+                                      SelectedItem="{Binding TableSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox Header="Khách hàng" Margin="5" Grid.Row="1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto"></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <RadioButton GroupName="groupCustomer" Margin="3" Content="Khách vãng lai" IsChecked="{Binding NonMemberChecked}"/>
+                                    <RadioButton GroupName="groupCustomer" Margin="3" Name="IsMemberRB" Content="Thành viên" IsChecked="{Binding IsMemberChecked}"/>
+                                </StackPanel>
+                                <Grid Grid.Column="1" IsEnabled="{Binding Path=IsChecked, ElementName=IsMemberRB}" >
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition></ColumnDefinition>
+                                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <WrapPanel Grid.Column="0" Orientation="Horizontal">
+                                        <TextBox materialDesign:HintAssist.Hint="Số điện thoại" Margin="10 0 0 0" materialDesign:TextFieldAssist.HasClearButton="True"
+                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}" Text="{Binding Phone, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        VerticalAlignment="Center" PreviewTextInput="PreviewTextInput" x:Name="txbPhone"/>
+                                        <TextBox Text="{Binding CustomerDisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        materialDesign:HintAssist.Hint="Họ tên" Margin="10 0 0 0" Name="CusName"
+                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                                        VerticalAlignment="Center" />
+                                        <TextBox Text="{Binding CustomerID, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Name="CusID"
+                                        materialDesign:HintAssist.Hint="Số CMT" Margin="10 0 0 0" PreviewTextInput="PreviewTextInput"
+                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}" 
+                                        VerticalAlignment="Center" />
+                                        <ComboBox Margin="10 0 0 -12" materialDesign:HintAssist.Hint="Phân loại" materialDesign:ComboBoxAssist.ClassicMode="True"                                         
+                                              DisplayMemberPath="DisplayName" ItemsSource="{Binding CustomerTypeList}" Name="CusType" 
+                                              SelectedItem="{Binding CustomerTypeSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                                        <TextBox Text="{Binding CurrentPoint, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        materialDesign:HintAssist.Hint="Số điểm" Margin="10 0 0 0" IsReadOnly="True"
+                                        Style="{StaticResource MaterialDesignFloatingHintTextBox}" Name="CusPoint" Focusable="False"
+                                        VerticalAlignment="Center" />
+
+                                    </WrapPanel>
+                                    <Button Grid.Column="1" Style="{StaticResource MaterialDesignFloatingActionMiniButton}" ToolTip="Thêm mới" Height="32" Width="32"                            
+                                            Margin="5" Command="{Binding AddCustomerCommand}" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                        <materialDesign:PackIcon Kind="Plus" Height="30" Width="30"/>
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        </GroupBox>
+                        <GroupBox Header="Danh sách sản phẩm" Margin="5" Grid.Row="2">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50"></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid Grid.Row="0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <ComboBox Margin="10 0 10 -5" materialDesign:HintAssist.Hint="Chọn thực đơn" Width="auto" materialDesign:ComboBoxAssist.ClassicMode="True"                                         
+                                              DisplayMemberPath="DisplayName" ItemsSource="{Binding MealList}" materialDesign:TextFieldAssist.HasClearButton="True"
+                                              SelectedItem="{Binding MealSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                        <ComboBox Margin="20 0 10 -5" materialDesign:HintAssist.Hint="Chọn nhóm hàng" Width="auto" materialDesign:ComboBoxAssist.ClassicMode="True"
+                                          DisplayMemberPath="DisplayName" ItemsSource="{Binding ProductTypeList}" materialDesign:TextFieldAssist.HasClearButton="True"
+                                              SelectedItem="{Binding ProductTypeSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></ComboBox>
+                                        <TextBox Width="200" Margin="100,0,0,10" Text="{Binding SearchContent, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"                                     
+                                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"   VerticalAlignment="Center"  materialDesign:TextFieldAssist.HasClearButton="True">
+                                            <materialDesign:HintAssist.Hint>
+                                                <StackPanel Orientation="Horizontal"
+                                                Margin="-2 0 0 0">
+                                                    <materialDesign:PackIcon Width="13" Height="13" Kind="Magnify"/>
+                                                    <TextBlock FontSize="13"       
+                                            Text="Tìm kiếm món ăn" />
+                                                </StackPanel>
+                                            </materialDesign:HintAssist.Hint>
+                                        </TextBox>
+                                    </StackPanel>
+                                </Grid>
+                                <Grid Grid.Row="1">
+                                    <materialDesign:Card Padding="10">
+                                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                            <WrapPanel Name="foodList" HorizontalAlignment="Center"/>
+                                        </ScrollViewer>
+                                    </materialDesign:Card>
+                                </Grid>
+                            </Grid>
+                        </GroupBox>
+                    </Grid>
+                </materialDesign:Card>
+                <materialDesign:Card Margin="5" Grid.Column="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1.5*"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Button Grid.Row="0" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" ToolTip="Tạo mới hóa đơn" Height="40" Width="40"                            
+                                            Margin="10 0" Command="{Binding NewBillCommand}" VerticalAlignment="Top" HorizontalAlignment="Right" Panel.ZIndex="2">
+                            <materialDesign:PackIcon Kind="Plus" Height="30" Width="30"/>
+                        </Button>
+                        <GroupBox Grid.Row="0" Header="Các món đang chọn" Margin="5" Panel.ZIndex="1">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <materialDesign:Card Grid.Row="0" Margin="0 0 0 5">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition></ColumnDefinition>
+                                            <ColumnDefinition Width="auto"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <WrapPanel Grid.Column="0">
+                                            <TextBox materialDesign:HintAssist.Hint="STT" Margin="5 0 10 5" IsReadOnly="True" Focusable="False"
+                                                 Text="{Binding Id,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" />
+                                            <TextBox materialDesign:HintAssist.Hint="Tên hàng" Margin="5 0 10 5" IsReadOnly="True" Focusable="False"
+                                                 Text="{Binding ProductName,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" />
+                                            <TextBox materialDesign:HintAssist.Hint="Số lượng" Margin="10 0 10 5" PreviewTextInput="PreviewTextInput"
+                                                 Text="{Binding Quantity,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" />
+                                            <TextBox materialDesign:HintAssist.Hint="Đơn giá" Margin="10 0 10 5" PreviewTextInput="PreviewTextInput"
+                                                 Text="{Binding Price,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" />
+                                            <TextBox materialDesign:HintAssist.Hint="Thành tiền" Margin="10 0 10 5" PreviewTextInput="PreviewTextInput" 
+                                                 Text="{Binding IntoMoney,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" />
+                                            <TextBox materialDesign:HintAssist.Hint="Ghi chú" Margin="10 0 10 5" 
+                                                 Text="{Binding Note, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" />
+                                        </WrapPanel>
+                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                            <Button Margin="5 0 0 0" Height="24" Command="{Binding SaveProductCommand}" Content="{materialDesign:PackIcon Check}"/>
+                                            <Button Margin="5 0" Height="24" Command="{Binding DeleteProductCommand}" Content="{materialDesign:PackIcon Delete}"/>
+
+                                        </StackPanel>
+                                    </Grid>
+
+                                </materialDesign:Card>
+                                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Name="ScrollBuyList">
+                                    <ListView ItemsSource="{Binding BuyListGrid}" SelectedItem="{Binding BuySelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Name="BuyList">
+                                        <ListView.View>
+                                            <GridView>
+                                                <GridViewColumn Header="STT" DisplayMemberBinding="{Binding Id}"></GridViewColumn>
+                                                <GridViewColumn Header="Tên hàng" DisplayMemberBinding="{Binding ProductName}"></GridViewColumn>
+                                                <GridViewColumn Header="Số lượng" DisplayMemberBinding="{Binding Quantity}"></GridViewColumn>
+                                                <GridViewColumn Header="Đơn giá" DisplayMemberBinding="{Binding Price}"></GridViewColumn>
+                                                <GridViewColumn Header="Thành tiền" DisplayMemberBinding="{Binding IntoMoney}"></GridViewColumn>
+                                                <GridViewColumn Header="Ghi chú" DisplayMemberBinding="{Binding Note}"></GridViewColumn>
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                </ScrollViewer>
+                            </Grid>
+                        </GroupBox>
+
+                        <Grid Grid.Row="1" Margin="5 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition Width="auto"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Margin="0 0 5 0"  Style="{StaticResource MaterialDesignRaisedAccentButton}" Content=" Áp dụng khuyến mãi" Height="24"
+                                    Command="{Binding ApplyPromotion}" HorizontalAlignment="Right" Width="250"/>
+                            <Button Grid.Column="1" Margin="5 0 0 0" Style="{StaticResource MaterialDesignRaisedDarkButton}" Content="Xóa bỏ khuyến mãi" Height="24"
+                                    Command="{Binding RejectPromotion}"  HorizontalAlignment="Left" Width="250"/>
+                            <Button Grid.Column="2" Margin="5 0" Height="24" Content="{materialDesign:PackIcon FormatListNumbered}" 
+                                    ToolTip="Danh sách chương trình khuyến mãi" Command="{Binding ShowListPromotionCommand}" VerticalAlignment="Center"/>
+                        </Grid>
+                        <GroupBox Header="Sản phẩm khuyến mãi" Grid.Row="2" Margin="5">
+                            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Name="ScrollGiftList">
+                                <ListView ItemsSource="{Binding GiftListGrid}" SelectedItem="{Binding GiftSelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridViewColumn Header="STT" DisplayMemberBinding="{Binding Id}"></GridViewColumn>
+                                            <GridViewColumn Header="Tên hàng" DisplayMemberBinding="{Binding ProductName}"></GridViewColumn>
+                                            <GridViewColumn Header="Số lượng" DisplayMemberBinding="{Binding Quantity}"></GridViewColumn>
+                                            <GridViewColumn Header="Đơn giá" DisplayMemberBinding="{Binding Price}"></GridViewColumn>
+                                            <GridViewColumn Header="Thành tiền" DisplayMemberBinding="{Binding IntoMoney}"></GridViewColumn>
+                                            <GridViewColumn Header="Ghi chú" DisplayMemberBinding="{Binding Note}"></GridViewColumn>
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>
+                            </ScrollViewer>
+                        </GroupBox>
+                        <Grid Grid.Row="3">
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <WrapPanel Grid.Row="0" HorizontalAlignment="Center">
+                                <TextBox Margin="10 0" materialDesign:HintAssist.Hint="Điểm cộng" Name="txbPointAdd" IsReadOnly="True"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" 
+                                     Text="{Binding PointAdd,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Margin="10 0" PreviewTextInput="PreviewTextInput" materialDesign:HintAssist.Hint="Trừ điểm thẻ"  
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" Name="txbPointSub"
+                                     Text="{Binding PointSub,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Margin="10 0" materialDesign:HintAssist.Hint="TỔNG TIỀN" IsReadOnly="True"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" 
+                                     Text="{Binding OriginBillValue,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Margin="10 0" materialDesign:HintAssist.Hint="PHẢI THANH TOÁN" FontWeight="Bold"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" 
+                                     Text="{Binding TrueBillValue,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Margin="10 0" PreviewTextInput="PreviewTextInput" materialDesign:HintAssist.Hint="Tiền khách đưa"  
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center"
+                                     Text="{Binding MoneyIn,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Margin="10 0" PreviewTextInput="PreviewTextInput" materialDesign:HintAssist.Hint="Tiền trả lại" IsReadOnly="True"  
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" FontWeight="UltraBold"
+                                     Text="{Binding MoneyOut,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            </WrapPanel>
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <TextBox Grid.Column="0" Margin="5 3" materialDesign:HintAssist.Hint="Ghi chú hóa đơn"
+                                         AcceptsReturn="True" TextWrapping="Wrap" MaxWidth="290"
+                                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" 
+                                     Text="{Binding NotePromotion,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Button Grid.Column="1"  Margin="5 0" Content="THANH TOÁN" Height="26" Background="#FF07E8E4"
+                                Style="{StaticResource MaterialDesignRaisedAccentButton}" Command="{Binding PayCommand}" BorderBrush="#FF00EAE6"
+                                        VerticalAlignment="Center"/>
+                            </Grid>
+                            
+                        </Grid>
+                        
+                    </Grid>
+                </materialDesign:Card>
+            </Grid>
+        </materialDesign:Card>
+    </Grid>
+
+</Window>

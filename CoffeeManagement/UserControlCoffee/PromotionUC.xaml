@@ -1,0 +1,245 @@
+﻿<UserControl x:Class="CoffeeManagement.UserControlCoffee.PromotionUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CoffeeManagement.UserControlCoffee"
+             mc:Ignorable="d" 
+             
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+     TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+     TextElement.FontWeight="Regular"
+     TextElement.FontSize="13"
+     TextOptions.TextFormattingMode="Ideal"
+     TextOptions.TextRenderingMode="Auto"
+     Background="{DynamicResource MaterialDesignPaper}"
+     FontFamily="{DynamicResource MaterialDesignFont}" 
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             
+             DataContext="{StaticResource PromotionVM}"        
+             Name="promotionUC"
+             
+             d:DesignHeight="640" d:DesignWidth="1240">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadCommand}" CommandParameter="{Binding ElementName=promotionUC}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <UserControl.Resources>
+        <sys:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">7</sys:Double>
+        <sys:Double x:Key="{x:Static SystemParameters.HorizontalScrollBarHeightKey}">7</sys:Double>
+    </UserControl.Resources>
+    <materialDesign:Card Margin="5" Background="{DynamicResource PrimaryHueLightBrush}" Foreground="{DynamicResource PrimaryHueLightForegroundBrush}" Padding="5">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <!--cac element binding tu selected item-->
+            
+            <materialDesign:Card Grid.Row="0" Margin="0 5" Name="Item1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition Width="auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <WrapPanel Grid.Column="0" Margin="0 0 0 10">
+                        <ComboBox Margin="10,0,10,-10" DisplayMemberPath="DisplayName" ItemsSource="{Binding ListPromotionType}" Name="cbPromotionType"
+                              SelectedItem="{Binding SelectedPromotionType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                              materialDesign:HintAssist.Hint="Loại chương trình" materialDesign:ComboBoxAssist.ClassicMode="True"
+                                  materialDesign:TextFieldAssist.HasClearButton="True">
+                        </ComboBox>
+                        <TextBox materialDesign:HintAssist.Hint="Mã chương trình" Margin="10 0 10 0" materialDesign:TextFieldAssist.HasClearButton="True"
+                             Text="{Binding PromotionIdStable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Name="txbPromotionId"
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" />
+                        <TextBox materialDesign:HintAssist.Hint="Tên chương trình" Margin="10 0 10 0" materialDesign:TextFieldAssist.HasClearButton="True"
+                             Text="{Binding DisplayName,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="170"
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" />
+                        <DatePicker Width="120" materialDesign:HintAssist.Hint="Ngày bắt đầu" Margin="10 0 10 0" materialDesign:TextFieldAssist.HasClearButton="True"
+                                Style="{StaticResource MaterialDesignFloatingHintDatePicker}" SelectedDateFormat="Short"
+                                Text="{Binding txtFromDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                    
+                                Focusable="False"/>
+                        <DatePicker Width="120" materialDesign:HintAssist.Hint="Ngày kết thúc" Margin="10 0 10 0" materialDesign:TextFieldAssist.HasClearButton="True"
+                                Style="{StaticResource MaterialDesignFloatingHintDatePicker}" SelectedDateFormat="Short"
+                                Text="{Binding txtToDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                                    
+                                    Focusable="False"/>
+                        <TextBox materialDesign:HintAssist.Hint="Giá trị KM" Margin="10 0 10 0" materialDesign:TextFieldAssist.HasClearButton="True"
+                             Text="{Binding AmountValue, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="PreviewTextInput"
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" Name="txbAmountValue"/>
+                        <TextBox materialDesign:HintAssist.Hint="Phần trăm KM" Margin="10 0 10 0" materialDesign:TextFieldAssist.HasClearButton="True"
+                             Text="{Binding PercentValue, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Name="txbPercentValue"
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" />
+                        <TextBox materialDesign:HintAssist.Hint="GT Hóa đơn" Margin="10 0 10 0" materialDesign:TextFieldAssist.HasClearButton="True"
+                             Text="{Binding PriceBillRequire, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="PreviewTextInput"
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" Name="txbPriceBillRequire"/>
+                        <ComboBox Margin="10,0,10,-10" DisplayMemberPath="DisplayName" ItemsSource="{Binding StateList}"
+                              SelectedItem="{Binding SelectedState, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                              materialDesign:HintAssist.Hint="Trạng thái" materialDesign:ComboBoxAssist.ClassicMode="True"
+                                  materialDesign:TextFieldAssist.HasClearButton="True"/>
+                        <TextBox materialDesign:HintAssist.Hint="Ghi chú" Margin="10 0 10 0" materialDesign:TextFieldAssist.HasClearButton="True"
+                             Text="{Binding Note, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" />
+
+                    </WrapPanel>
+                    <Button Grid.Column="1" Style="{StaticResource MaterialDesignIconButton}" ToolTip="Tạo mới" Height="32" Width="32"
+                            Margin="0 0 10 0" Command="{Binding ClearAllFieldCommand}"
+                                VerticalAlignment="Center" HorizontalAlignment="Center">
+                        <materialDesign:PackIcon Kind="CloseCircle" Height="30" Width="30"/>
+                    </Button>
+                </Grid>
+                
+            </materialDesign:Card>
+            
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" Margin="5">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <materialDesign:Card Grid.Row="0" Margin="0 0 0 5" Name="Item2">
+                            <StackPanel Orientation="Horizontal">
+                                <Button Command="{Binding AddPromotionCommand}" Content="Thêm" Margin="5" Width="100"></Button>
+                                <Button Command="{Binding EditPromotionCommand}" Content="Sửa" Margin="5" Width="100"></Button>
+                                <Button Command="{Binding DeletePromotionCommand}" Content="Xóa" Margin="5" Width="100"></Button>
+                            </StackPanel>
+                        </materialDesign:Card>
+                        <materialDesign:Card Grid.Row="1" Margin="0 5 0 5" Name="Item3">
+                            <StackPanel Orientation="Horizontal">
+                                <ComboBox ItemsSource="{Binding SearchList}" Name="SearchListCB" materialDesign:TextFieldAssist.HasClearButton="True"
+                                      Margin="10 0 20 -5" SelectedItem="{Binding SelectedSearchList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                materialDesign:HintAssist.Hint="Tìm kiếm theo">
+                                </ComboBox>
+                                <TextBox Width="350" Margin="20 0 0 10" Text="{Binding SearchContent, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}"
+                                     Name="searchTextbox"
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}"  
+                                     VerticalAlignment="Center" 
+                                     materialDesign:TextFieldAssist.HasClearButton="True">
+                                    <materialDesign:HintAssist.Hint>
+                                        <StackPanel Orientation="Horizontal"
+                                                Margin="-2 0 0 0">
+                                            <materialDesign:PackIcon Width="16" Height="16" Kind="ShoppingSearch"/>
+                                            <TextBlock FontSize="16"       
+                                            Text="Nội dung tìm kiếm" />
+                                        </StackPanel>
+                                    </materialDesign:HintAssist.Hint>
+                                </TextBox>
+                            </StackPanel>
+                        </materialDesign:Card>
+                        <materialDesign:Card Grid.Row="2" Margin="0 5 0 0">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                                <ListView ItemsSource="{Binding ListGridPromotion}" SelectedItem="{Binding SelectedPromotionItem, Mode=TwoWay}">
+                                    <ListView.View>
+                                        <GridView>
+                                            <GridViewColumn Header="Mã chương trình" DisplayMemberBinding="{Binding Id}"></GridViewColumn>
+                                            <GridViewColumn Header="Tên chương trình" DisplayMemberBinding="{Binding DisplayName}"></GridViewColumn>
+                                            <GridViewColumn Header="Loại chương trình" DisplayMemberBinding="{Binding PromotionType}"></GridViewColumn>
+                                            <GridViewColumn Header="Trạng thái" DisplayMemberBinding="{Binding IsApply}"></GridViewColumn>
+                                        </GridView>
+                                    </ListView.View>
+                                </ListView>
+                            </ScrollViewer>
+                        </materialDesign:Card>
+                    </Grid>
+                </Grid>
+                <Grid Grid.Column="1" Name="cardProduct">
+                    <materialDesign:Card Margin="5">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto"></RowDefinition>
+                                <RowDefinition Height="auto"></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <WrapPanel Grid.Row="0" Orientation="Horizontal" Margin="0 5" Name="Item4">
+                                <Grid>
+                                    <RadioButton GroupName="group1" Margin="15 0 0 0" Name="rbProductType" 
+                                             IsChecked="{Binding CheckRBProductType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <ComboBox materialDesign:HintAssist.Hint="Áp dụng cho nhóm hàng" Margin="40 0 15 0" Width="200"
+                                      materialDesign:HintAssist.HintOpacity=".7" IsEditable="False"
+                                          IsEnabled="{Binding Path=IsChecked, ElementName=rbProductType}"
+                                      DisplayMemberPath="DisplayName" ItemsSource="{Binding ProductTypeResultList}"
+                                      SelectedItem="{Binding SelectedProductTypeResultList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                              materialDesign:TextFieldAssist.HasClearButton="True"/>
+                                </Grid>
+                                <Grid Margin="25 0 0 0">
+                                    <RadioButton GroupName="group1" Margin="0" Name="rbProduct"
+                                             IsChecked="{Binding CheckRBProduct, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <ComboBox materialDesign:HintAssist.Hint="Áp dụng cho sản phẩm" Margin="25 0 15 0" Width="200"
+                                      materialDesign:HintAssist.HintOpacity=".7" IsEditable="True" Name="cbProduct"
+                                          IsEnabled="{Binding Path=IsChecked, ElementName=rbProduct}"
+                                      DisplayMemberPath="DisplayName" ItemsSource="{Binding ProductResultList}"
+                                      SelectedItem="{Binding SelectedProductResultList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              materialDesign:TextFieldAssist.HasClearButton="True">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="KeyUp">
+                                                <i:InvokeCommandAction Command="{Binding KeyUpCommand}" CommandParameter="{Binding ElementName=cbProduct}"/>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </ComboBox>
+                                </Grid>                                
+                            </WrapPanel>
+                            <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0 5" Name="Item5">
+                                <TextBox materialDesign:HintAssist.Hint="Số lượng từ" Margin="15 0" materialDesign:TextFieldAssist.HasClearButton="True"                             
+                                     Text="{Binding ProductAmount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewTextInput="PreviewTextInput"                             
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" />
+                                <TextBox materialDesign:HintAssist.Hint="Mã chương trình" Margin="15 0"                              
+                                     Text="{Binding PromotionIdChangable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Focusable="False"                             
+                                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" VerticalAlignment="Center" />
+                                <ComboBox Margin="10,0,10,-10" DisplayMemberPath="DisplayName" ItemsSource="{Binding ProductTypeList}" materialDesign:TextFieldAssist.HasClearButton="True"
+                              SelectedItem="{Binding SelectedProductType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Name="cbProductType"
+                              materialDesign:HintAssist.Hint="Phân loại" materialDesign:ComboBoxAssist.ClassicMode="True"/>
+                                <Button Grid.Column="1" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" ToolTip="Thêm" Height="32" Width="32"
+                            Margin="50 0 5 0" Command="{Binding AddProductCommand}"
+                                VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <materialDesign:PackIcon Kind="Plus" Height="30" Width="30"/>
+                                </Button>
+                                <Button Grid.Column="1" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" ToolTip="Sửa" Height="32" Width="32"
+                            Margin="5 0 5 0" Command="{Binding EditProductCommand}"
+                                VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <materialDesign:PackIcon Kind="NoteEditOutline" Height="30" Width="30"/>
+                                </Button>
+                                <Button Grid.Column="1" Style="{StaticResource MaterialDesignFloatingActionMiniAccentButton}" ToolTip="Xóa" Height="32" Width="32"
+                            Margin="5 0 5 0" Command="{Binding DeleteProductCommand}"
+                                VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <materialDesign:PackIcon Kind="DeleteEmptyOutline" Height="30" Width="30"/>
+                                </Button>
+                            </StackPanel>
+                            <GroupBox Grid.Row="2" Header="Sản phẩm áp dụng" Margin="5">
+                                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                                    <ListView ItemsSource="{Binding ListGridProductType1}" SelectedItem="{Binding SelectedProductType1Item, Mode=TwoWay}">
+                                        <ListView.View>
+                                            <GridView>
+                                                <GridViewColumn Header="Tên sản phẩm" DisplayMemberBinding="{Binding PPDisplayName}"></GridViewColumn>
+                                                <GridViewColumn Header="Số lượng" DisplayMemberBinding="{Binding ProductAmount}"></GridViewColumn>
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                </ScrollViewer>
+                            </GroupBox>
+                            <GroupBox Grid.Row="3" Header="Sản phẩm quà tặng" Margin="5" Name="gbProductGift">
+                                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+                                    <ListView ItemsSource="{Binding ListGridProductType0}" SelectedItem="{Binding SelectedProductType0Item, Mode=TwoWay}">
+                                        <ListView.View>
+                                            <GridView>
+                                                <GridViewColumn Header="Tên sản phẩm" DisplayMemberBinding="{Binding PPDisplayName}"></GridViewColumn>
+                                                <GridViewColumn Header="Số lượng" DisplayMemberBinding="{Binding ProductAmount}"></GridViewColumn>
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+                                </ScrollViewer>
+                            </GroupBox>
+                        </Grid>
+                    </materialDesign:Card>
+                </Grid>
+                
+            </Grid>
+        </Grid>
+    </materialDesign:Card>
+</UserControl>
